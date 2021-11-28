@@ -1,0 +1,406 @@
+---
+title: "Project 3"
+author: "Thomas"
+date: "11/28/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r loading packages, echo=FALSE, warning=FALSE, include=FALSE}
+library(shiny)
+library(tidyverse)
+library(ggmap)
+library(janitor)
+library(sf)
+library(mapview)
+library(leaflet)
+library(rgdal)
+library(RColorBrewer)
+library(lubridate)
+library(plotly)
+library(reshape2)
+library(shinyWidgets)
+library(ggrepel)
+library(dplyr)
+library(tidyr)
+```
+
+# Introduction and description of database
+
+The population of Switzerland is now of 8,670 millions in 2020 which was of 7,955 millions in 2011.
+The number is growing and the number of foreigner citizen is too, from which some of them get the Swiss citizenship.
+In this document we will explore a database about the acquisition of Swiss nationality.
+
+This database is composed of the following:
+
+  - `Previous.citizenship`: the previous citizenship of the individual;
+
+  - `Age`: the age of the individual;
+
+  - `Genre`: the gender of the individual (either `Male` or `Female`):
+
+  - `Type.of.acquisition`: the type of acquisition with the following values:
+
+    - `Confirmation of the Swiss nationality`: when the individual claimed to be a Swiss citizen and had to prove it to the authorities;
+
+    - `Naturalisation by adoption`: when the individual is adopted by a Swiss citizen;
+
+    - `Ordinary naturalisation`: which is the standard way to acquire Swiss citizenship;
+
+    - `Reintegration`: when individual had Swiss citizenship but lost it in the past;
+
+    - `Simplified naturalisation`: for special cases, e.g., wife or husband of a Swiss, child of a Swiss, etc.
+
+  - `Canton`: the canton where the Swiss citizenship has been acquired;
+
+  - `Year`: the year of acquisition of Swiss citizenship (from `2011` to `2020`); and,
+
+  - `Value`: the number of acquisition for all previous criteria.
+
+```{r loading data, echo=FALSE, warning=FALSE}
+load("my_data_French.RData")
+my_data <- my_data %>%
+  mutate(Previous.citizenship = as.character(Previous.citizenship)) %>%
+  mutate(Genre = as.character(Genre)) %>%
+  mutate(Type.of.acquisition = as.character(Type.of.acquisition)) %>%
+  mutate(Canton = as.character(Canton))
+```
+
+# Investigating the type of acquisition
+
+```{r type of acquisition, echo=FALSE, warning=FALSE}
+type <- my_data %>%
+  select(Type.of.acquisition, Value) %>%
+  mutate(Type.of.acquisition = as.factor(Type.of.acquisition)) %>%
+  group_by(Type.of.acquisition) %>%
+  summarise(Value = sum(Value))
+
+type2 <- type %>% 
+  mutate(csum = rev(cumsum(rev(Value))), 
+         pos = Value/2 + lead(csum, 1),
+         pos = if_else(is.na(pos), Value/2, pos))
+
+p <- ggplot(type, aes(x = "" , y = Value,
+                      fill = fct_inorder(Type.of.acquisition))) +
+  geom_col(width = 1, color = 1) +
+  coord_polar(theta = "y") +
+  scale_fill_brewer(palette = "Pastel1") +
+  geom_label_repel(data = type2,
+                   aes(y = pos,
+                       label = paste0(round((Value / sum(Value))*100,2), 
+                                      "%")),
+                   size = 4.5, nudge_x = 1, show.legend = FALSE) +
+  guides(fill = guide_legend(title = "Type of acquisition")) +
+  theme_void() +
+  ggtitle("Pie chart of type of acquisition") +
+  theme(plot.title = element_text(hjust = 1))
+p
+```
+
+Looking at this chart, we see that there is two main type of acquisition (ordinary one and simplified one) for a total of 99.38%.
+As defined in the introduction, there is three type of acquisition that are really special cases (`Confirmation of the Swiss nationality`, `Naturalisation by adoption` and `Reintegration`).
+
+We will focus on these three in the next part and then we won't consider it anymore in order to focus on the two main types of acquisition.
+
+## Basic exploration of three less represented types of acquisiton
+
+Let's take a look at the following type of acquisition : `Confirmation of the Swiss nationality`, `Naturalization by adoption` and `Reintegration`. Since each type of acquisition are quite different, we will take a look at them one by one.
+
+### By previous citizenship
+
+#### `Confirmation of the Swiss nationality`
+
+First, note that there has been only `1452` confirmation between 2011 and 2020 which lead to a mean of `145.2` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then zoom for ones with value higher than 50.
+
+We can see that in the top 10, except for Brazil, there is only European countries, in particular the three first are bordering ones. **COMMENT ON THIS**
+
+```{r confirmation, echo=FALSE, warning=FALSE}
+my_data3 <- my_data %>%
+  filter(Type.of.acquisition == "Confirmation of the Swiss nationality")
+
+nationalities <- my_data3 %>%
+  select(Previous.citizenship, Value) %>%
+  mutate(Previous.citizenship = as.factor(Previous.citizenship)) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(Value))
+
+# For the 50 previous citizenship with higher values
+order_to_use <- nationalities %>%
+  select(Previous.citizenship, Value) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(Value)) %>%
+  arrange(desc(Value)) %>%
+  select(Previous.citizenship)
+order_to_use <- order_to_use[1:50,]
+
+nationalities <- nationalities %>%
+  filter(Previous.citizenship %in% order_to_use$Previous.citizenship)
+p <- ggplot(nationalities,
+            aes(x = reorder(Previous.citizenship,Value), y = Value)) +
+  geom_col() +
+  theme(axis.text.y = element_text(size = 5),
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  labs(x = "Previous citizenship", y = "Number",
+  title = "Confirmation of the Swiss nationality",
+  subtitle = "50 more frequent previous citizenship") +
+  #scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(breaks = seq(0, 350, by = 50)) +
+  coord_flip()
+p
+
+# For the 10 previous citizenship with higher values
+nationalities <- my_data3 %>%
+  select(Previous.citizenship, Value) %>%
+  mutate(Previous.citizenship = as.factor(Previous.citizenship)) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(Value))
+
+nationalities <- nationalities %>%
+  filter(Value >= 50)
+p <- ggplot(nationalities,
+            aes(x = reorder(Previous.citizenship,Value), y = Value)) +
+  geom_col() +
+  theme(axis.text.y = element_text(size = 10),
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  labs(x = "Previous citizenship", y = "Number",
+  title = "Confirmation of the Swiss nationality",
+  subtitle = "Previous citizenship with number >= 50") +
+  #scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(breaks = seq(0, 350, by = 50)) +
+  coord_flip()
+p
+```
+
+#### `Naturalization by adoption`
+
+As before, note that there has been `776` naturalization by adoption between 2011 and 2020 which lead to a mean of `77.6` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then zoom for ones with value higher than 25.
+
+We can see that for previous citizenship with higher numbers are not European, except for Russia and Germany. Ones with higher numbers are countries where poverty is far more present that in Switzerland, especially when we see that Ethiopia is almost 1/5 of the total. **COMMENT ON THIS**
+
+```{r adoption, echo=FALSE, warning=FALSE}
+my_data3 <- my_data %>%
+  filter(Type.of.acquisition == "Naturalisation by adoption")
+
+nationalities <- my_data3 %>%
+  select(Previous.citizenship, Value) %>%
+  mutate(Previous.citizenship = as.factor(Previous.citizenship)) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(Value))
+
+# For the 50 previous citizenship with higher values
+order_to_use <- nationalities %>%
+  select(Previous.citizenship, Value) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(Value)) %>%
+  arrange(desc(Value)) %>%
+  select(Previous.citizenship)
+order_to_use <- order_to_use[1:50,]
+
+nationalities <- nationalities %>%
+  filter(Previous.citizenship %in% order_to_use$Previous.citizenship)
+p <- ggplot(nationalities,
+            aes(x = reorder(Previous.citizenship,Value), y = Value)) +
+  geom_col() +
+  theme(axis.text.y = element_text(size = 5),
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  labs(x = "Previous citizenship", y = "Number",
+  title = "Naturalization by adoption",
+  subtitle = "50 more frequent previous citizenship") +
+  #scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(breaks = seq(0, 350, by = 25)) +
+  coord_flip()
+p
+
+# For the 10 previous citizenship with higher values
+nationalities <- my_data3 %>%
+  select(Previous.citizenship, Value) %>%
+  mutate(Previous.citizenship = as.factor(Previous.citizenship)) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(Value))
+
+nationalities <- nationalities %>%
+  filter(Value >= 25)
+p <- ggplot(nationalities,
+            aes(x = reorder(Previous.citizenship,Value), y = Value)) +
+  geom_col() +
+  theme(axis.text.y = element_text(size = 10),
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  labs(x = "Previous citizenship", y = "Number",
+  title = "Naturalization by adoption",
+  subtitle = "Previous citizenship with number >= 25") +
+  #scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(breaks = seq(0, 350, by = 25)) +
+  coord_flip()
+p
+```
+
+#### `Reintegration`
+
+Note that there has been only `162` naturalization by adoption between 2011 and 2020 which lead to a mean of `16.2` per year. We first plot the total number of such citizens and then zoom for ones with value higher than 15.
+
+We can see that the top 4 is composed only by bordering countries which means that concerned individuals may have gone to these countries after losing their Swiss citizenship. We also see that `Stateless` appeared on y axis which means that the individual that obtained the Swiss citizenship had only Swiss nationality when he lost it.
+
+```{r Reintegration, echo=FALSE, warning=FALSE}
+my_data3 <- my_data %>%
+  filter(Type.of.acquisition == "Reintegration" & Value > 0)
+
+nationalities <- my_data3 %>%
+  select(Previous.citizenship, Value) %>%
+  mutate(Previous.citizenship = as.factor(Previous.citizenship)) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(Value))
+
+p <- ggplot(nationalities,
+            aes(x = reorder(Previous.citizenship,Value), y = Value)) +
+  geom_col() +
+  theme(axis.text.y = element_text(size = 5),
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  labs(x = "Previous citizenship", y = "Number",
+  title = "Reintegration") +
+  #scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(breaks = seq(0, 40, by = 5)) +
+  coord_flip()
+p
+
+# For the 10 previous citizenship with higher values
+nationalities <- my_data3 %>%
+  select(Previous.citizenship, Value) %>%
+  mutate(Previous.citizenship = as.factor(Previous.citizenship)) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(Value))
+
+nationalities <- nationalities %>%
+  filter(Value >= 10)
+p <- ggplot(nationalities,
+            aes(x = reorder(Previous.citizenship,Value), y = Value)) +
+  geom_col() +
+  theme(axis.text.y = element_text(size = 10),
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  labs(x = "Previous citizenship", y = "Number",
+  title = "Reintegration",
+  subtitle = "Previous citizenship with number >= 15") +
+  #scale_fill_brewer(palette = "Dark2") +
+  scale_y_continuous(breaks = seq(0, 40, by = 5)) +
+  coord_flip()
+p
+```
+
+### Over time
+
+We will now visualize time series of these three type of acquisitions. Beginning with `Confirmation of the Swiss nationality`, we see that there the number of such acquisition is decreasing since 2012 and has been divided by almost 4 in 9 years. **COMMENT ON THIS** For `Naturalization by adoption`, there has been a huge drop between 2013 and 2015. **COMMENT ON THIS** Finishing with `Reintegration`, numbers are slowly increasing throughout the years except for a peak in 2019 where the number seems extreme compared to other years. **COMMENT ON THIS**
+
+```{r first 3, echo=FALSE, warning=FALSE, message=FALSE}
+my_data3 <- my_data %>%
+  filter(Type.of.acquisition != "Ordinary naturalisation" &
+           Type.of.acquisition != "Simplified naturalisation")
+time_serie <- my_data3 %>%
+  select(Type.of.acquisition, Year, Value) %>%
+  mutate(Year = as.integer(Year),
+         Type.of.acquisition = as.factor(Type.of.acquisition)) %>%
+  group_by(Year, Type.of.acquisition) %>%
+  summarise(Value = sum(Value))
+
+p <- ggplot(time_serie, aes(x = Year, y = Value, color = Type.of.acquisition)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = seq(2011, 2020, by = 1)) +
+  scale_y_continuous(breaks = seq(0, 300, by = 25)) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.position = c(0.7,0.7),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  labs(x = "Year", y = "Number", title = "Time series") +
+  guides(fill=guide_legend(title="Type of acquisition"))
+p
+```
+
+
+
+*NEED TO COMPLETE AND MODIFY FROM HERE*
+
+# Acquisition categorized by previous citizenship
+
+```{r computations nationalities, echo=FALSE, warning=FALSE}
+my_data2 <- my_data %>%
+  filter(Type.of.acquisition == "Ordinary naturalisation" |
+           Type.of.acquisition == "Simplified naturalisation")
+nationalities <- my_data2 %>%
+  select(Previous.citizenship, Value) %>%
+  mutate(Previous.citizenship = as.factor(Previous.citizenship)) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(Value)) %>%
+  arrange(desc(Value))
+
+p <- ggplot(nationalities[1:50,],aes(x = reorder(Previous.citizenship,Value),
+                              y = Value)) +
+  geom_col() +
+  theme(axis.text.y = element_text(size = 5),
+        axis.text.x = element_text(angle = 20),
+        plot.title = element_text(hjust = 0.5)) +
+  labs(x = "Previous citizenship",
+       title = "Total number of new citizen categorized by their previous
+       citizenship") +
+  scale_y_continuous(breaks = seq(0, 60000, by = 5000)) +
+  coord_flip()
+p
+
+nationalities$Value <- (nationalities$Value / sum(nationalities$Value)) * 100
+
+p <- ggplot(nationalities[1:50,],aes(x = reorder(Previous.citizenship,Value),
+                              y = Value)) +
+  geom_col() +
+  theme(axis.text.y = element_text(size = 5),
+        plot.title = element_text(hjust = 0.5)) +
+  labs(x = "Previous citizenship", y = "Percentage over all naturalisation (%)",
+       title = "Percentage of new citizen categorized by their previous
+       citizenship") +
+  scale_y_continuous(breaks = seq(0, 20, by = 1)) +
+  coord_flip()
+p
+```
+
+```{r nationalities and type of naturalisation,message=FALSE, echo=FALSE, warning=FALSE}
+nationalities <- my_data2 %>%
+  select(Previous.citizenship, Value, Type.of.acquisition) %>%
+  mutate(Previous.citizenship = as.factor(Previous.citizenship),
+         Type.of.acquisition = as.factor(Type.of.acquisition)) %>%
+  group_by(Previous.citizenship, Type.of.acquisition) %>%
+  summarise(Value = sum(Value))
+
+order_to_use <- nationalities %>%
+  select(Previous.citizenship, Value) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(Value)) %>%
+  arrange(desc(Value)) %>%
+  select(Previous.citizenship)
+order_to_use <- order_to_use[1:50,]
+
+nationalities <- nationalities %>%
+  filter(Previous.citizenship %in% order_to_use$Previous.citizenship)
+p <- ggplot(nationalities,
+            aes(x = reorder(Previous.citizenship,Value), y = Value,
+                fill = Type.of.acquisition)) +
+  geom_col() +
+  theme(axis.text.y = element_text(size = 5),
+        legend.position = c(0.7,0.35),
+        plot.title = element_text(hjust = 0.5)) +
+  labs(x = "Previous citizenship",
+  title = "Total number of new citizen categorized by their previous
+       citizenship") +
+  #scale_fill_brewer(palette = "Pastel1") +
+  #scale_y_continuous(breaks = seq(0, 20, by = 1)) +
+  coord_flip()
+p
+```
+
+
