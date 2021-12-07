@@ -28,6 +28,7 @@ library(shinyWidgets)
 library(ggrepel)
 library(dplyr)
 library(tidyr)
+library(gridExtra)
 ```
 
 # Introduction and description of database
@@ -62,19 +63,19 @@ This database is composed of the following:
 
   - `Value`: the number of acquisition for all previous criteria.
 
-```{r loading data, echo=FALSE, warning=FALSE}
-load("my_data_French.RData")
+```{r loading data, echo=FALSE, warning=FALSE, message=FALSE}
+load("my_data.RData")
 my_data <- my_data %>%
   mutate(Previous.citizenship = as.character(Previous.citizenship)) %>%
   mutate(Genre = as.character(Genre)) %>%
   mutate(Type.of.acquisition = as.character(Type.of.acquisition)) %>%
   mutate(Canton = as.character(Canton))
-x <- 100 / sum(my_data$Value)
+total_count <- 100 / sum(my_data$Value)
 ```
 
 # Investigating the type of acquisition
 
-```{r type of acquisition, echo=FALSE, warning=FALSE}
+```{r type of acquisition, echo=FALSE, warning=FALSE, message=FALSE}
 type <- my_data %>%
   select(Type.of.acquisition, Value) %>%
   mutate(Type.of.acquisition = as.factor(Type.of.acquisition)) %>%
@@ -120,7 +121,7 @@ First, note that there has been only `1452` confirmation between 2011 and 2020 w
 
 We can see that in the top 10, except for Brazil, there is only European countries, in particular the three first are bordering ones. **COMMENT ON THIS**
 
-```{r confirmation, echo=FALSE, warning=FALSE}
+```{r confirmation, echo=FALSE, warning=FALSE, message=FALSE}
 my_data3 <- my_data %>%
   filter(Type.of.acquisition == "Confirmation of the Swiss nationality")
 
@@ -143,7 +144,7 @@ nationalities <- nationalities %>%
   filter(Previous.citizenship %in% order_to_use$Previous.citizenship)
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
-  geom_col() +
+  geom_col(fill = "#4393C3") +
   theme_bw() +
   theme(axis.text.y = element_text(size = 5),
         plot.title = element_text(hjust = 0.5),
@@ -151,7 +152,7 @@ p <- ggplot(nationalities,
   labs(x = "Previous citizenship", y = "Count",
   title = "Confirmation of the Swiss nationality",
   subtitle = "50 more frequent previous citizenship") +
-  #scale_fill_brewer(palette = "Dark2") +
+  #scale_fill_brewer(palette = "#92C5DE") +
   scale_y_continuous(breaks = seq(0, 350, by = 50)) +
   coord_flip()
 p
@@ -167,7 +168,7 @@ nationalities <- nationalities %>%
   filter(Value >= 50)
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
-  geom_col() +
+  geom_col(fill = "#4393C3") +
   theme_bw() +
   theme(axis.text.y = element_text(size = 10),
         plot.title = element_text(hjust = 0.5),
@@ -178,8 +179,37 @@ p <- ggplot(nationalities,
   #scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(breaks = seq(0, 350, by = 50)) +
   coord_flip()
+#p
+```
+
+```{r Confirmation of the Swiss nationality by age and gender, message=FALSE, echo=FALSE, warning=FALSE}
+confirmation <- my_data %>%
+  filter(Type.of.acquisition == "Confirmation of the Swiss nationality")
+
+confirmation <- confirmation %>%
+  mutate(Value = ifelse(Genre == "Female",
+                        Value, -Value))
+
+confirmation <- confirmation %>%
+  select(Genre, Cat_age, Value) %>%
+  mutate(Genre = as.factor(Genre), Cat_age = as.factor((Cat_age))) %>%
+  group_by(Genre, Cat_age) %>%
+  summarise(Value = sum(Value))
+
+p <- ggplot(confirmation,
+            aes(x = Cat_age, y = Value,
+                fill = Genre)) +
+  geom_col() +
+  theme_bw() +
+  theme(legend.position = c(0.7,0.7),
+        plot.title = element_text(hjust = 0.5)) +
+  labs(x = "Age", y = "Count", fill = "Gender",
+       title = "Confirmation of the Swiss nationality") +
+  scale_y_continuous(breaks = seq(-600, 600, by = 100), labels = abs) +
+  coord_flip()
 p
 ```
+
 
 #### `Naturalization by adoption`
 
@@ -187,7 +217,7 @@ As before, note that there has been `776` naturalization by adoption between 201
 
 We can see that for previous citizenship with higher numbers are not European, except for Russia and Germany. Ones with higher numbers are countries where poverty is far more present that in Switzerland, especially when we see that Ethiopia is almost 1/5 of the total. **COMMENT ON THIS**
 
-```{r adoption, echo=FALSE, warning=FALSE}
+```{r adoption, echo=FALSE, message=FALSE, warning=FALSE}
 my_data3 <- my_data %>%
   filter(Type.of.acquisition == "Naturalisation by adoption")
 
@@ -210,7 +240,7 @@ nationalities <- nationalities %>%
   filter(Previous.citizenship %in% order_to_use$Previous.citizenship)
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
-  geom_col() +
+  geom_col(fill = "#4393C3") +
   theme_bw() +
   theme(axis.text.y = element_text(size = 5),
         plot.title = element_text(hjust = 0.5),
@@ -234,7 +264,7 @@ nationalities <- nationalities %>%
   filter(Value >= 25)
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
-  geom_col() +
+  geom_col(fill = "#4393C3") +
   theme_bw() +
   theme(axis.text.y = element_text(size = 10),
         plot.title = element_text(hjust = 0.5),
@@ -245,8 +275,37 @@ p <- ggplot(nationalities,
   #scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(breaks = seq(0, 350, by = 25)) +
   coord_flip()
+#p
+```
+
+```{r Naturalization by adoption by age and gender, message=FALSE, echo=FALSE, warning=FALSE}
+naturalization <- my_data %>%
+  filter(Type.of.acquisition == "Naturalisation by adoption")
+
+naturalization <- naturalization %>%
+  mutate(Value = ifelse(Genre == "Female",
+                        Value, -Value))
+
+naturalization <- naturalization %>%
+  select(Genre, Cat_age, Value) %>%
+  mutate(Genre = as.factor(Genre), Cat_age = as.factor((Cat_age))) %>%
+  group_by(Genre, Cat_age) %>%
+  summarise(Value = sum(Value))
+
+p <- ggplot(naturalization,
+            aes(x = Cat_age, y = Value,
+                fill = Genre)) +
+  geom_col() +
+  theme_bw() +
+  theme(legend.position = c(0.8,0.65),
+        plot.title = element_text(hjust = 0.5)) +
+  labs(x = "Age", y = "Count", fill = "Gender",
+       title = "Naturalization by adoption") +
+  scale_y_continuous(breaks = seq(-300, 300, by = 50), labels = abs) +
+  coord_flip()
 p
 ```
+
 
 #### `Reintegration`
 
@@ -254,7 +313,7 @@ Note that there has been only `162` naturalization by adoption between 2011 and 
 
 We can see that the top 4 is composed only by bordering countries which means that concerned individuals may have gone to these countries after losing their Swiss citizenship. We also see that `Stateless` appeared on y axis which means that the individual that obtained the Swiss citizenship had only Swiss nationality when he lost it.
 
-```{r Reintegration, echo=FALSE, warning=FALSE}
+```{r Reintegration, echo=FALSE, message=FALSE, warning=FALSE}
 my_data3 <- my_data %>%
   filter(Type.of.acquisition == "Reintegration" & Value > 0)
 
@@ -266,7 +325,7 @@ nationalities <- my_data3 %>%
 
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
-  geom_col() +
+  geom_col(fill = "#4393C3") +
   theme_bw() +
   theme(axis.text.y = element_text(size = 5),
         plot.title = element_text(hjust = 0.5),
@@ -289,7 +348,7 @@ nationalities <- nationalities %>%
   filter(Value >= 10)
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
-  geom_col() +
+  geom_col(fill = "#4393C3") +
   theme_bw() +
   theme(axis.text.y = element_text(size = 10),
         plot.title = element_text(hjust = 0.5),
@@ -300,8 +359,37 @@ p <- ggplot(nationalities,
   #scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(breaks = seq(0, 40, by = 5)) +
   coord_flip()
+#p
+```
+
+```{r Reintegration by age and gender, message=FALSE, echo=FALSE, warning=FALSE}
+reintegration <- my_data %>%
+  filter(Type.of.acquisition == "Reintegration")
+
+reintegration <- reintegration %>%
+  mutate(Value = ifelse(Genre == "Female",
+                        Value, -Value))
+
+reintegration <- reintegration %>%
+  select(Genre, Cat_age, Value) %>%
+  mutate(Genre = as.factor(Genre), Cat_age = as.factor((Cat_age))) %>%
+  group_by(Genre, Cat_age) %>%
+  summarise(Value = sum(Value))
+
+p <- ggplot(reintegration,
+            aes(x = Cat_age, y = Value,
+                fill = Genre)) +
+  geom_col() +
+  theme_bw() +
+  theme(legend.position = c(0.85,0.7),
+        plot.title = element_text(hjust = 0.5)) +
+  labs(x = "Age", y = "Count", fill = "Gender",
+       title = "Reintegration") +
+  scale_y_continuous(breaks = seq(-30, 30, by = 5), labels = abs) +
+  coord_flip()
 p
 ```
+
 
 ### Over time
 
@@ -327,7 +415,7 @@ p <- ggplot(time_serie, aes(x = Year, y = Value, color = Type.of.acquisition)) +
   theme(plot.title = element_text(hjust = 0.5),
         legend.position = c(0.7,0.7),
         plot.subtitle = element_text(hjust = 0.5)) +
-  labs(x = "Year", y = "Number", title = "Time series") +
+  labs(x = "Year", y = "Count", title = "Time series") +
   guides(fill=guide_legend(title="Type of acquisition"))
 p
 ```
@@ -369,9 +457,9 @@ p <- ggplot(nationalities,
         legend.position = c(0.7,0.35),
         plot.title = element_text(hjust = 0.5)) +
   labs(x = "Previous citizenship", y = "Count",
-  title = "Counts of ordinary and simplified naturalization") +
+  title = "Count of ordinary and simplified naturalization") +
   scale_y_continuous(breaks = seq(0, 60000, by = 5000),
-                     sec.axis = sec_axis(~ . * x,
+                     sec.axis = sec_axis(~ . * total_count,
                                          breaks = seq(0, 20, by = 1),
                                          name = "Percentage over all naturalization (%)"))+
   coord_flip()
@@ -412,7 +500,8 @@ p <- ggplot(nationalities,
         legend.position = c(0.7,0.35),
         plot.title = element_text(hjust = 0.5)) +
   labs(x = "Previous citizenship", y = "Count",
-  title = "Counts of ordinary and simplified naturalization") +
+  title = "Count of ordinary and simplified naturalization") +
+  scale_y_continuous(breaks = seq(-10000, 40000, by = 5000), labels = abs) +
   coord_flip()
 p
 ```
@@ -448,7 +537,65 @@ p <- ggplot(nationalities,
         plot.title = element_text(hjust = 0.5)) +
   labs(x = "Previous citizenship", y = "Proportion",
   title = "Proportion of ordinary and simplified naturalization") +
+  scale_y_continuous(breaks = seq(0, 1, by = .1)) +
   coord_flip()
 p
+```
+
+```{r Ordinary and simplified by gender and age, message=FALSE, echo=FALSE, warning=FALSE}
+ordinary <- my_data %>%
+  filter(Type.of.acquisition == "Ordinary naturalisation")
+
+ordinary <- ordinary %>%
+  mutate(Value = ifelse(Genre == "Female",
+                        Value, -Value))
+
+ordinary <- ordinary %>%
+  select(Genre, Cat_age, Value) %>%
+  mutate(Genre = as.factor(Genre), Cat_age = as.factor((Cat_age))) %>%
+  group_by(Genre, Cat_age) %>%
+  summarise(Value = sum(Value))
+
+p1 <- ggplot(ordinary,
+            aes(x = Cat_age, y = Value,
+                fill = Genre)) +
+  geom_col() +
+  theme_bw() +
+  theme(legend.position = c("-0.042","0.7"), axis.title.y = element_blank(),
+        plot.title = element_text(hjust = 0.5), axis.text.x = element_text(size = 8)) +
+  labs(y = "Count", fill = "Gender",
+       title = "Ordinary naturalisation") +
+  scale_x_discrete(guide = guide_axis(position = "right")) + 
+  scale_y_continuous(breaks = seq(-40000, 40000, by = 20000), labels = abs) +
+  coord_flip()
+#p1
+
+simplified <- my_data %>%
+  filter(Type.of.acquisition == "Simplified naturalisation")
+
+simplified <- simplified %>%
+  mutate(Value = ifelse(Genre == "Female",
+                        Value, -Value))
+
+simplified <- simplified %>%
+  select(Genre, Cat_age, Value) %>%
+  mutate(Genre = as.factor(Genre), Cat_age = as.factor((Cat_age))) %>%
+  group_by(Genre, Cat_age) %>%
+  summarise(Value = sum(Value))
+
+p2 <- ggplot(simplified,
+            aes(x = Cat_age, y = Value,
+                fill = Genre)) +
+  geom_col() +
+  theme_bw() +
+  theme(legend.position = "none", plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(size = 8)) +
+  labs(x = "Age", y = "Count", fill = "Gender",
+       title = "Simplified naturalisation") +
+  scale_y_continuous(breaks = seq(-15000, 15000, by = 5000), labels = abs) +
+  coord_flip()
+#p2
+
+grid.arrange(p2, p1, nrow = 1)
 ```
 
