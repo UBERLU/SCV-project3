@@ -69,6 +69,7 @@ my_data <- my_data %>%
   mutate(Genre = as.character(Genre)) %>%
   mutate(Type.of.acquisition = as.character(Type.of.acquisition)) %>%
   mutate(Canton = as.character(Canton))
+x <- 100 / sum(my_data$Value)
 ```
 
 # Investigating the type of acquisition
@@ -143,10 +144,11 @@ nationalities <- nationalities %>%
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
   geom_col() +
+  theme_bw() +
   theme(axis.text.y = element_text(size = 5),
         plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5)) +
-  labs(x = "Previous citizenship", y = "Number",
+  labs(x = "Previous citizenship", y = "Count",
   title = "Confirmation of the Swiss nationality",
   subtitle = "50 more frequent previous citizenship") +
   #scale_fill_brewer(palette = "Dark2") +
@@ -166,12 +168,13 @@ nationalities <- nationalities %>%
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
   geom_col() +
+  theme_bw() +
   theme(axis.text.y = element_text(size = 10),
         plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5)) +
-  labs(x = "Previous citizenship", y = "Number",
+  labs(x = "Previous citizenship", y = "Count",
   title = "Confirmation of the Swiss nationality",
-  subtitle = "Previous citizenship with number >= 50") +
+  subtitle = "Previous citizenship with count >= 50") +
   #scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(breaks = seq(0, 350, by = 50)) +
   coord_flip()
@@ -208,10 +211,11 @@ nationalities <- nationalities %>%
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
   geom_col() +
+  theme_bw() +
   theme(axis.text.y = element_text(size = 5),
         plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5)) +
-  labs(x = "Previous citizenship", y = "Number",
+  labs(x = "Previous citizenship", y = "Count",
   title = "Naturalization by adoption",
   subtitle = "50 more frequent previous citizenship") +
   #scale_fill_brewer(palette = "Dark2") +
@@ -231,12 +235,13 @@ nationalities <- nationalities %>%
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
   geom_col() +
+  theme_bw() +
   theme(axis.text.y = element_text(size = 10),
         plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5)) +
-  labs(x = "Previous citizenship", y = "Number",
+  labs(x = "Previous citizenship", y = "Count",
   title = "Naturalization by adoption",
-  subtitle = "Previous citizenship with number >= 25") +
+  subtitle = "Previous citizenship with count >= 25") +
   #scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(breaks = seq(0, 350, by = 25)) +
   coord_flip()
@@ -262,10 +267,11 @@ nationalities <- my_data3 %>%
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
   geom_col() +
+  theme_bw() +
   theme(axis.text.y = element_text(size = 5),
         plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5)) +
-  labs(x = "Previous citizenship", y = "Number",
+  labs(x = "Previous citizenship", y = "Count",
   title = "Reintegration") +
   #scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(breaks = seq(0, 40, by = 5)) +
@@ -284,12 +290,13 @@ nationalities <- nationalities %>%
 p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value)) +
   geom_col() +
+  theme_bw() +
   theme(axis.text.y = element_text(size = 10),
         plot.title = element_text(hjust = 0.5),
         plot.subtitle = element_text(hjust = 0.5)) +
-  labs(x = "Previous citizenship", y = "Number",
+  labs(x = "Previous citizenship", y = "Count",
   title = "Reintegration",
-  subtitle = "Previous citizenship with number >= 15") +
+  subtitle = "Previous citizenship with count >= 15") +
   #scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(breaks = seq(0, 40, by = 5)) +
   coord_flip()
@@ -316,6 +323,7 @@ p <- ggplot(time_serie, aes(x = Year, y = Value, color = Type.of.acquisition)) +
   geom_point() +
   scale_x_continuous(breaks = seq(2011, 2020, by = 1)) +
   scale_y_continuous(breaks = seq(0, 300, by = 25)) +
+  theme_bw() +
   theme(plot.title = element_text(hjust = 0.5),
         legend.position = c(0.7,0.7),
         plot.subtitle = element_text(hjust = 0.5)) +
@@ -328,48 +336,13 @@ p
 
 *NEED TO COMPLETE AND MODIFY FROM HERE*
 
-# Acquisition categorized by previous citizenship
+# Exploration by ordinary and simplified naturalisation categorized by previous citizenship
 
-```{r computations nationalities, echo=FALSE, warning=FALSE}
+```{r new citizen categorized by their previous citizenship, message=FALSE, echo=FALSE, warning=FALSE}
 my_data2 <- my_data %>%
   filter(Type.of.acquisition == "Ordinary naturalisation" |
            Type.of.acquisition == "Simplified naturalisation")
-nationalities <- my_data2 %>%
-  select(Previous.citizenship, Value) %>%
-  mutate(Previous.citizenship = as.factor(Previous.citizenship)) %>%
-  group_by(Previous.citizenship) %>%
-  summarise(Value = sum(Value)) %>%
-  arrange(desc(Value))
 
-p <- ggplot(nationalities[1:50,],aes(x = reorder(Previous.citizenship,Value),
-                              y = Value)) +
-  geom_col() +
-  theme(axis.text.y = element_text(size = 5),
-        axis.text.x = element_text(angle = 20),
-        plot.title = element_text(hjust = 0.5)) +
-  labs(x = "Previous citizenship",
-       title = "Total number of new citizen categorized by their previous
-       citizenship") +
-  scale_y_continuous(breaks = seq(0, 60000, by = 5000)) +
-  coord_flip()
-p
-
-nationalities$Value <- (nationalities$Value / sum(nationalities$Value)) * 100
-
-p <- ggplot(nationalities[1:50,],aes(x = reorder(Previous.citizenship,Value),
-                              y = Value)) +
-  geom_col() +
-  theme(axis.text.y = element_text(size = 5),
-        plot.title = element_text(hjust = 0.5)) +
-  labs(x = "Previous citizenship", y = "Percentage over all naturalisation (%)",
-       title = "Percentage of new citizen categorized by their previous
-       citizenship") +
-  scale_y_continuous(breaks = seq(0, 20, by = 1)) +
-  coord_flip()
-p
-```
-
-```{r nationalities and type of naturalisation,message=FALSE, echo=FALSE, warning=FALSE}
 nationalities <- my_data2 %>%
   select(Previous.citizenship, Value, Type.of.acquisition) %>%
   mutate(Previous.citizenship = as.factor(Previous.citizenship),
@@ -391,16 +364,91 @@ p <- ggplot(nationalities,
             aes(x = reorder(Previous.citizenship,Value), y = Value,
                 fill = Type.of.acquisition)) +
   geom_col() +
+  theme_bw() +
   theme(axis.text.y = element_text(size = 5),
         legend.position = c(0.7,0.35),
         plot.title = element_text(hjust = 0.5)) +
-  labs(x = "Previous citizenship",
-  title = "Total number of new citizen categorized by their previous
-       citizenship") +
-  #scale_fill_brewer(palette = "Pastel1") +
-  #scale_y_continuous(breaks = seq(0, 20, by = 1)) +
+  labs(x = "Previous citizenship", y = "Count",
+  title = "Counts of ordinary and simplified naturalization") +
+  scale_y_continuous(breaks = seq(0, 60000, by = 5000),
+                     sec.axis = sec_axis(~ . * x,
+                                         breaks = seq(0, 20, by = 1),
+                                         name = "Percentage over all naturalization (%)"))+
   coord_flip()
 p
 ```
 
+```{r Comparison for previous citizenship with numbers, message=FALSE, echo=FALSE, warning=FALSE}
+my_data2 <- my_data %>%
+  filter(Type.of.acquisition == "Ordinary naturalisation" |
+           Type.of.acquisition == "Simplified naturalisation")
+my_data2 <- my_data2 %>%
+  mutate(Value = ifelse(Type.of.acquisition == "Ordinary naturalisation",
+                        Value, -Value))
+nationalities <- my_data2 %>%
+  select(Previous.citizenship, Value, Type.of.acquisition) %>%
+  mutate(Previous.citizenship = as.factor(Previous.citizenship),
+         Type.of.acquisition = as.factor(Type.of.acquisition)) %>%
+  group_by(Previous.citizenship, Type.of.acquisition) %>%
+  summarise(Value = sum(Value))
+
+order_to_use <- nationalities %>%
+  select(Previous.citizenship, Value) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(abs(Value))) %>%
+  arrange(desc(Value)) %>%
+  select(Previous.citizenship)
+order_to_use <- order_to_use[1:50,]
+
+nationalities <- nationalities %>%
+  filter(Previous.citizenship %in% order_to_use$Previous.citizenship)
+
+p <- ggplot(nationalities,
+            aes(x = reorder(Previous.citizenship,abs(Value)), y = Value,
+                fill = Type.of.acquisition)) +
+  geom_col() +
+  theme_bw() +
+  theme(axis.text.y = element_text(size = 5),
+        legend.position = c(0.7,0.35),
+        plot.title = element_text(hjust = 0.5)) +
+  labs(x = "Previous citizenship", y = "Count",
+  title = "Counts of ordinary and simplified naturalization") +
+  coord_flip()
+p
+```
+
+```{r Proportion for nationalities, message=FALSE, echo=FALSE, warning=FALSE}
+my_data2 <- my_data %>%
+  filter(Type.of.acquisition == "Ordinary naturalisation" |
+           Type.of.acquisition == "Simplified naturalisation")
+nationalities <- my_data2 %>%
+  select(Previous.citizenship, Value, Type.of.acquisition) %>%
+  mutate(Previous.citizenship = as.factor(Previous.citizenship),
+         Type.of.acquisition = as.factor(Type.of.acquisition)) %>%
+  group_by(Previous.citizenship, Type.of.acquisition) %>%
+  summarise(Value = sum(Value))
+
+order_to_use <- nationalities %>%
+  select(Previous.citizenship, Value) %>%
+  group_by(Previous.citizenship) %>%
+  summarise(Value = sum(Value)) %>%
+  arrange(desc(Value)) %>%
+  select(Previous.citizenship)
+order_to_use <- order_to_use[1:50,]
+
+nationalities <- nationalities %>%
+  filter(Previous.citizenship %in% order_to_use$Previous.citizenship)
+p <- ggplot(nationalities,
+            aes(x = reorder(Previous.citizenship,Value), y = Value,
+                fill = Type.of.acquisition)) +
+  geom_col(position = "fill") +
+  theme_bw() +
+  theme(axis.text.y = element_text(size = 5),
+        legend.position = c(0.75,0.35),
+        plot.title = element_text(hjust = 0.5)) +
+  labs(x = "Previous citizenship", y = "Proportion",
+  title = "Proportion of ordinary and simplified naturalization") +
+  coord_flip()
+p
+```
 
