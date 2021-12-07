@@ -1,8 +1,6 @@
+# Load the requires packages
 pacman::p_load(tidyverse, pacman, ggmap, janitor, sf, mapview, leaflet, rgdal, RColorBrewer, 
                lubridate, boot, broom)
-
-
-
 library(tidyverse)
 library(sf)
 library(rcartocolor)
@@ -10,7 +8,7 @@ library(readxl)
 library(plotly)
 
 
-swiss_cantons <- st_read("resources/G1K09.shp")
+swiss_cantons <- st_read("~/Documents/GitHub/SCV-project3/data/for map plot/G1K09.shp")
 head(swiss_cantons)
 
 
@@ -37,14 +35,18 @@ ggplot()+
   theme(legend.title = element_blank())
 
 
-population_canton <- read_csv("population.csv")
+# population_canton <- read_csv("population.csv")
+population_canton <- population_yearly[c(1,2)]
+
 
 swiss_cantons <- swiss_cantons %>% 
-  left_join(population_canton, c("KURZ" = "Canton"))
+  left_join(population_canton, c("KURZ" = "canton"))
 
+swiss_cantons$year_2011 <- as.numeric(swiss_cantons$year_2011)
 
 swiss_cantons <- swiss_cantons %>%
-  mutate(relative_nat = total/(Population_in_1000.x))
+  mutate(relative_nat = (total/(year_2011))*100)
+
 
 
 ggplot()+
@@ -60,7 +62,7 @@ ggplot()+
     size = 3,
     segment.alpha = 0.5
   ) +
-  scale_fill_continuous(low="white", high="#2166AC", limits=c(0,10)) +
+  scale_fill_continuous(low="white", high="#2166AC", limits=c(0,1)) +
   labs(title = "TRelative Naturalisation (devided by the number of citizens in canton) by Canton in 2011") +
   theme(legend.title = element_blank())
 
