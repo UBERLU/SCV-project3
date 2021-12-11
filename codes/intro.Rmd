@@ -1,0 +1,24 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+The aim of this report is to analyze how the naturalisation in Switzerland evolved in the last years and to understand the profile of the people that seek to obtain the Swiss nationality. Since, there is many attributes that we should take into account, we thoroughly analyze the characteristics of such people, as well as the way they obtained the Swiss nationality. 
+The following analysis is performed using the data that is provided by the Swiss Federal Statistical Office (FSO later in the report), which is the national competence center for official statistics in Switzerland. The analysis is performed on the data generated between 2011 and 2020. 
+We are particularly interested in this interval of time because in June 2014, the Swiss Parlament updated the Federal Act on Swiss Citizenship (RS 141.0) and passed a law that restricts heavily the process of naturalisation and adds new conditions to it. The law entered in force in January 2018. One of the motivation of this report is to verify and quantify the effect of this law on the number of naturalisations. 
+For this report, we are using 2 complementary datasets: the population of Switzerland by cantons and the geographical characteristics of the cantons. The data is provided by FSO.
+The main dataset that is used for the report is composed of the following variables:
+• Previous.citizenship: categorical variable stating the previous citizenship of the individual;
+• Age: the numeric variable stating the age of the individual (between 0 and 100 years);
+• Genre: categorical variable representing the gender of the individual (Male or Female):
+• Type.of.acquisition: categorical variable stating the type of acquisition with the following 5 levels:
+– Confirmation of the Swiss nationality: individual claims to be a Swiss citizen and has to prove it to the authorities;
+– Naturalisation by adoption: individual is adopted by a Swiss citizen;
+– Ordinary naturalisation: standard way to acquire Swiss citizenship;
+– Reintegration: individual had Swiss citizenship but lost it in the past;
+– Simplified naturalisation: for special cases, e.g., wife or husband of a Swiss citizen, child of a Swiss citizen, etc.
+• Canton: categorical variable with 26 factor levels stating the canton where the Swiss citizenship is acquired;
+• Year: time variable which represents the year of acquisition of Swiss citizenship (from 2011 to 2020); and, 
+• Value: the total number of swiss nationality acquisitions depending on all the previous criterias.
+
+

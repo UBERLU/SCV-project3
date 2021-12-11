@@ -138,7 +138,7 @@ full_data$all_pop_y <- as.numeric(full_data$all_pop_y)
 full_data <- full_data %>%
   mutate(relative_total = (all_years/(all_pop_y))*100)
 
-
+subset(my_data, Year == 2011)
 ## Relative map
 ggplot()+
   geom_sf(data = full_data, aes(fill = relative_total), size = 0.3) + 
@@ -155,7 +155,9 @@ ggplot()+
   ) +
   scale_fill_continuous(low="white", high="#2166AC", limits=c(0,1)) +
   labs(title = "Relative number of Naturalisations between 2011 and 2020") +
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank()) +  theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = c(0.9,0.9)) + labs(fill='Relative Number') 
+
 
 
 #### Gif for time varibale 
@@ -244,7 +246,7 @@ pop_2020['year'] <- 2020
 pop_total <- bind_rows(pop_2011,pop_2012,pop_2013,pop_2014,pop_2015,
                        pop_2016,pop_2017,pop_2018,pop_2019,pop_2020)
 
-
+### Gif map for row
 levels(total_by_canton$Canton) <- levels(data$Canton)  <- c("CH", 
                                                             "ZH", "BE", "LU", "UR", "SZ", "OW", 
                                                             "NW", "GL", "ZG", "FR", "SO", "BS", 
@@ -260,32 +262,46 @@ total_by_canton <- swiss_cantons %>%
 
 
 
-
-
-ggplot()+
-  geom_sf(data = total_by_canton, aes(fill = total), size = 0.3) + 
+ggplot(total_by_canton) +
+  geom_sf(aes(fill = total), size = 0.3) +
   theme_void() + 
-  ggrepel::geom_label_repel(
-    data = total_by_canton,
-    aes(geometry = geometry),
-    stat = "sf_coordinates",
-    min.segment.length = 0.2,
-    colour = "#541f3f",
-    size = 3,
-    segment.alpha = 0.5
-  ) +
-  scale_fill_continuous(low="white", high="#2166AC", limits=c(0,90000)) +
-  labs(title = "Total Number of Naturalisations between 2011 to 2020") + theme(plot.title = element_text(hjust = 0.5))+
-  theme(legend.position = c(0.9,0.9)) + labs(fill='Number of Naturalisations') +
-  transition_time(as.integer(year)) 
-
-
-##################################
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
+  transition_manual(as.integer(year)) +
+  scale_fill_continuous(low="white", high="#2166AC", limits=c(0,11000)) +
+  labs(title = "Number of naturalisations by canton in year: {current_frame}") + theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = c(0.9,0.9)) + labs(fill='Number of Naturalisations') 
 
 
 
-names(total_by_canton)[1] <- "canton"
+
+################Relative gif
+names(total_by_canton)[3] <- "canton"
+gif_rel <- merge(total_by_canton, pop_total, by = c("year", "canton")) gif_rel
+
+gif_rel <- gif_rel %>%
+  mutate(relative = (total/pop)*100)
+
+
+ggplot(gif_rel) +
+  geom_sf(aes(fill = relative), size = 0.3) +
+  theme_void() + 
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
+  transition_manual(as.integer(year)) +
+  scale_fill_continuous(low="white", high="#2166AC", limits=c(0,1.6)) +
+  labs(title = "Relative number of naturalisations by canton in year: {current_frame}") + theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = c(0.9,0.9)) + labs(fill='Relative number of Naturalisations') 
+
+
+
+
+############################
+
+# names(total_by_canton)[1] <- "KZ"
 pop_total$canton <- as.factor(pop_total$canton)
+
+total_by_canton
 
 
 data_ready <- merge(total_by_canton,pop_total, by = c("year", "canton")) 
@@ -307,13 +323,13 @@ p <- ggplot(data_ready, aes(x = year,
                      y = total,
                      fill = canton)) +
   geom_area(color = "black") +
-  labs(title = "Total Number of Naturalisation by Canton",
+  labs(title = "Total number of naturalisations by canton over time",
        subtitle = "2011 - 2020",
        x = "Year",
        y = "",
        fill = "Canton") +
   scale_x_continuous(breaks=seq(2011, 2020, 1)) +
-  theme_minimal() + theme(axis.text.x=element_text(angle=45, hjust=1))
+  theme_minimal() + theme(axis.text.x=element_text(angle=45, hjust=1)) + theme(plot.title = element_text(hjust = 0.5))
 ggplotly(p)
 
 
@@ -326,14 +342,16 @@ p <- ggplot(data_ready, aes(x = year,
                             y = relative,
                             fill = canton)) +
   geom_area(color = "black") +
-  labs(title = "Number of Naturalisation relative to Population by Canton",
+  labs(title = "Relative number of naturalisations by Canton over time",
        subtitle = "2011 - 2020",
        x = "Year",
        y = "",
        fill = "Canton") +
   scale_x_continuous(breaks=seq(2011, 2020, 1)) +
-  theme_minimal() + theme(axis.text.x=element_text(angle=45, hjust=1))
+  theme_minimal() + theme(axis.text.x=element_text(angle=45, hjust=1)) + theme(plot.title = element_text(hjust = 0.5))
 ggplotly(p)
+
+
 
 
 
