@@ -55,6 +55,24 @@ The population of Switzerland is now of 8,670 millions in 2020 which was of 7,95
 The number is growing and the number of foreigner citizen is too, from which some of them get the Swiss citizenship.
 In this document we will explore a database about the acquisition of Swiss nationality.
 
+# General overview of data
+
+```{r echo=FALSE, out.width='80%'}
+knitr::include_graphics('plots/daryna/nat_map.png')
+```
+
+```{r echo=FALSE, out.width='80%'}
+knitr::include_graphics('plots/daryna/nat_map.gif')
+```
+
+```{r echo=FALSE, out.width='80%'}
+knitr::include_graphics('plots/daryna/relat_map.png')
+```
+
+```{r echo=FALSE, out.width='80%'}
+knitr::include_graphics('plots/daryna/relative_map.gif')
+```
+
 # Investigating the type of acquisition
 
 ```{r echo=FALSE, out.width='60%'}
@@ -150,4 +168,8 @@ knitr::include_graphics('plots/thomas/ordin_simpl_proportion_previous_citizenshi
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/ordin_simpl_age_gender.png')
+```
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots/thomas/over_time_ordin_simpl.png')
 ```
