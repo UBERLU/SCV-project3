@@ -62,15 +62,17 @@ Let's take a look at the following type of acquisition : `Confirmation of the Sw
 
 First, note that there has been only `1452` confirmation between 2011 and 2020 which lead to a mean of `145.2` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then zoom for ones with value higher than 50.
 
-We can see that in the top 10, except for Brazil, there is only European countries, in particular the three first are bordering ones. **COMMENT ON THIS**
-
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/confirmation_previous_citizenship.png')
 ```
 
+We can see that in the top 10, except for Brazil, there is only European countries, in particular the three first are bordering ones. **COMMENT ON THIS**
+
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/confirmation_age_gender.png')
 ```
+
+Most of confirmation concerns persons aged less than 20, 90.22% of the total count of confirmed Swiss citizenship. This may be due to the fact that child from Swiss citizens are not immediately declared on their birth day.
 
 #### `Naturalization by adoption`
 
