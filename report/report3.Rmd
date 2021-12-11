@@ -92,17 +92,21 @@ We see that most of naturalization by adoption are acquired before 20 years, whi
 
 #### `Reintegration`
 
-Note that there has been only `162` naturalization by adoption between 2011 and 2020 which lead to a mean of `16.2` per year. We first plot the total number of such citizens and then zoom for ones with value higher than 15.
+This type of acquisition is the less represented, there has been only 162 reinstatement of Swiss citizenship in 10 years. This concerns people that have previously held Swiss citizenship but lost it by forfeiting or relieving citizenship, or by marrying a foreign person. There is different criteria for reintegration based on where the concerned person lives. Some criteria are purely subjective ones.
 
-We can see that the top 4 is composed only by bordering countries which means that concerned individuals may have gone to these countries after losing their Swiss citizenship. We also see that `Stateless` appeared on y axis which means that the individual that obtained the Swiss citizenship had only Swiss nationality when he lost it.
+Note that there has been only `162` naturalization by adoption between 2011 and 2020 which lead to a mean of `16.2` per year. We first plot the total number of such citizens and then zoom for ones with value higher than 15.
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/reintegration_previous_citizenship.png')
 ```
 
+We can see that the top 4 is composed only by bordering countries which means that concerned individuals may have gone to these countries after losing their Swiss citizenship. We also see that `Stateless` appeared on y axis which means that the individual that obtained the Swiss citizenship had only Swiss nationality when he lost it.
+
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/reintegration_age_gender.png')
 ```
+
+The most represented class of age is people aged between 30 and 39 with a count of 55, which represents 33.95% of the total amount of reintegrated people.
 
 ### Over time
 
