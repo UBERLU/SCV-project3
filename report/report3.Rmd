@@ -74,17 +74,21 @@ knitr::include_graphics('plots/thomas/confirmation_age_gender.png')
 
 #### `Naturalization by adoption`
 
-As before, note that there has been `776` naturalization by adoption between 2011 and 2020 which lead to a mean of `77.6` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then zoom for ones with value higher than 25.
+To acquire Swiss citizenship through adoption if the person adopted was under the age of majority (18 years) at the time of adoption.
 
-We can see that for previous citizenship with higher numbers are not European, except for Russia and Germany. Ones with higher numbers are countries where poverty is far more present that in Switzerland, especially when we see that Ethiopia is almost 1/5 of the total. **COMMENT ON THIS**
+As before, note that there has been `776` naturalization by adoption between 2011 and 2020 which lead to a mean of `77.6` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then zoom for ones with value higher than 25.
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/adoption_previous_citizenship.png')
 ```
 
+We can see that for previous citizenship with higher numbers are not European, except for Russia and Germany. Ones with higher numbers are countries where poverty is far more present that in Switzerland, especially when we see that Ethiopia is almost 1/5 of the total. **COMMENT ON THIS**
+
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/adoption_age_gender.png')
 ```
+
+We see that most of naturalization by adoption are acquired before 20 years, which is relevant with what has been written at the beginning of this section since the concerned person has to be adopted before having attained majority. Note that only 0.9% of total adopted naturalization concerns persons that are 20 and more.
 
 #### `Reintegration`
 
