@@ -11,35 +11,49 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction and description of database
 
+The aim of this report is to analyze how the naturalization in Switzerland evolved in the last years and to understand the profile of the people that seek to obtain the Swiss nationality.
+Since, there is many attributes that we should take into account, we thoroughly analyze the characteristics of such people, as well as the way they obtained the Swiss nationality. 
+
+The following analysis is performed using the data that is provided by the Swiss Federal Statistical Office (FSO later in the report), which is the national competence center for official statistics in Switzerland.
+The analysis is performed on the data generated between 2011 and 2020. 
+
+We are particularly interested in this interval of time because in June 2014, the Swiss Parliament updated the Federal Act on Swiss Citizenship (RS 141.0) and passed a law that restricts heavily the process of naturalization and adds new conditions to it.
+The law entered in force in January 2018.
+One of the motivation of this report is to verify and quantify the effect of this law on the number of naturalization. 
+
+For this report, we are using 2 complementary dataset: the population of Switzerland by cantons and the geographical characteristics of the cantons.
+The data is provided by FSO.
+The main dataset that is used for the report is composed of the following variables:
+
+- `Previous.citizenship`: categorical variable stating the previous citizenship of the individual;
+
+- `Age`: the numeric variable stating the age of the individual (between 0 and 100 years);
+
+- `Genre`: categorical variable representing the gender of the individual (Male or Female);
+
+- `Type.of.acquisition`: categorical variable stating the type of acquisition with the following 5 levels:
+
+  - `Confirmation of the Swiss nationality`: individual claims to be a Swiss citizen and has to prove it to the authorities;
+  
+  - `Naturalisation by adoption`: individual is adopted by a Swiss citizen;
+  
+  - `Ordinary naturalisation`: standard way to acquire Swiss citizenship;
+  
+  - `Reintegration`: individual had Swiss citizenship but lost it in the past;
+  
+  - `Simplified naturalisation`: for special cases, e.g., wife or husband of a Swiss citizen, child of a Swiss citizen, etc.
+  
+- `Canton`: categorical variable with 26 factor levels stating the canton where the Swiss citizenship is acquired;
+
+- `Year`: time variable which represents the year of acquisition of Swiss citizenship (from 2011 to 2020); and,
+
+- `Value`: the total number of Swiss nationality acquisitions depending on all the previous criterias.
+
+#------------------------------------------------------------------------------
+
 The population of Switzerland is now of 8,670 millions in 2020 which was of 7,955 millions in 2011.
 The number is growing and the number of foreigner citizen is too, from which some of them get the Swiss citizenship.
 In this document we will explore a database about the acquisition of Swiss nationality.
-
-This database is composed of the following:
-
-  - `Previous.citizenship`: the previous citizenship of the individual;
-
-  - `Age`: the age of the individual;
-
-  - `Genre`: the gender of the individual (either `Male` or `Female`):
-
-  - `Type.of.acquisition`: the type of acquisition with the following values:
-
-    - `Confirmation of the Swiss nationality`: when the individual claimed to be a Swiss citizen and had to prove it to the authorities;
-
-    - `Naturalisation by adoption`: when the individual is adopted by a Swiss citizen;
-
-    - `Ordinary naturalisation`: which is the standard way to acquire Swiss citizenship;
-
-    - `Reintegration`: when individual had Swiss citizenship but lost it in the past;
-
-    - `Simplified naturalisation`: for special cases, e.g., wife or husband of a Swiss, child of a Swiss, etc.
-
-  - `Canton`: the canton where the Swiss citizenship has been acquired;
-
-  - `Year`: the year of acquisition of Swiss citizenship (from `2011` to `2020`); and,
-
-  - `Value`: the number of acquisition for all previous criteria.
 
 # Investigating the type of acquisition
 
@@ -56,11 +70,9 @@ We will focus on these three in the next part and then we won't consider it anym
 
 Let's take a look at the following type of acquisition : `Confirmation of the Swiss nationality`, `Naturalization by adoption` and `Reintegration`. Since each type of acquisition are quite different, we will take a look at them one by one.
 
-### By previous citizenship
+### `Confirmation of the Swiss nationality`
 
-#### `Confirmation of the Swiss nationality`
-
-First, note that there has been only `1452` confirmation between 2011 and 2020 which lead to a mean of `145.2` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then zoom for ones with value higher than 50.
+First, note that there has been only `1452` confirmation between 2011 and 2020 which lead to a mean of `145.2` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then look at all by age and gender.
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/confirmation_previous_citizenship.png')
@@ -74,11 +86,11 @@ knitr::include_graphics('plots/thomas/confirmation_age_gender.png')
 
 Most of confirmation concerns persons aged less than 20, 90.22% of the total count of confirmed Swiss citizenship. This may be due to the fact that child from Swiss citizens are not immediately declared on their birth day.
 
-#### `Naturalization by adoption`
+### `Naturalization by adoption`
 
 To acquire Swiss citizenship through adoption if the person adopted was under the age of majority (18 years) at the time of adoption.
 
-As before, note that there has been `776` naturalization by adoption between 2011 and 2020 which lead to a mean of `77.6` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then zoom for ones with value higher than 25.
+As before, note that there has been `776` naturalization by adoption between 2011 and 2020 which lead to a mean of `77.6` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then look at all by age and gender.
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/adoption_previous_citizenship.png')
@@ -92,11 +104,11 @@ knitr::include_graphics('plots/thomas/adoption_age_gender.png')
 
 We see that most of naturalization by adoption are acquired before 20 years, which is relevant with what has been written at the beginning of this section since the concerned person has to be adopted before having attained majority. Note that only 7 persons were 20 and more, so 0.9% of total adopted naturalization concerns.
 
-#### `Reintegration`
+### `Reintegration`
 
 This type of acquisition is the less represented, there has been only 162 reinstatement of Swiss citizenship in 10 years. This concerns people that have previously held Swiss citizenship but lost it by forfeiting or relieving citizenship, or by marrying a foreign person. There is different criteria for reintegration based on where the concerned person lives. Some criteria are purely subjective ones.
 
-Note that there has been only `162` naturalization by adoption between 2011 and 2020 which lead to a mean of `16.2` per year. We first plot the total number of such citizens and then zoom for ones with value higher than 15.
+Note that there has been only `162` naturalization by adoption between 2011 and 2020 which lead to a mean of `16.2` per year. We first plot the total number of such citizens and then look at all by age and gender.
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/reintegration_previous_citizenship.png')
@@ -120,7 +132,9 @@ knitr::include_graphics('plots/thomas/over_time_rein_adop_conf.png')
 
 *NEED TO COMPLETE AND MODIFY FROM HERE*
 
-# Exploration by ordinary and simplified naturalisation categorized by previous citizenship
+# Exploration by ordinary and simplified naturalization categorized
+
+In this section we will explore ordinary and simplified naturalization and compare them since these two type of acquisition are the most common ones. We can also compare these two since the procedure is quite the same.
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/ordin_simpl_previous_citizenship_percentage.png')
