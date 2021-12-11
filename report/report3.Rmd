@@ -88,7 +88,7 @@ We can see that for previous citizenship with higher numbers are not European, e
 knitr::include_graphics('plots/thomas/adoption_age_gender.png')
 ```
 
-We see that most of naturalization by adoption are acquired before 20 years, which is relevant with what has been written at the beginning of this section since the concerned person has to be adopted before having attained majority. Note that only 0.9% of total adopted naturalization concerns persons that are 20 and more.
+We see that most of naturalization by adoption are acquired before 20 years, which is relevant with what has been written at the beginning of this section since the concerned person has to be adopted before having attained majority. Note that only 7 persons were 20 and more, so 0.9% of total adopted naturalization concerns.
 
 #### `Reintegration`
 
