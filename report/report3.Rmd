@@ -1,0 +1,129 @@
+---
+title: "Project 3"
+author: "Daryna Bilodid & Thomas Blomet"
+date: "12/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction and description of database
+
+The population of Switzerland is now of 8,670 millions in 2020 which was of 7,955 millions in 2011.
+The number is growing and the number of foreigner citizen is too, from which some of them get the Swiss citizenship.
+In this document we will explore a database about the acquisition of Swiss nationality.
+
+This database is composed of the following:
+
+  - `Previous.citizenship`: the previous citizenship of the individual;
+
+  - `Age`: the age of the individual;
+
+  - `Genre`: the gender of the individual (either `Male` or `Female`):
+
+  - `Type.of.acquisition`: the type of acquisition with the following values:
+
+    - `Confirmation of the Swiss nationality`: when the individual claimed to be a Swiss citizen and had to prove it to the authorities;
+
+    - `Naturalisation by adoption`: when the individual is adopted by a Swiss citizen;
+
+    - `Ordinary naturalisation`: which is the standard way to acquire Swiss citizenship;
+
+    - `Reintegration`: when individual had Swiss citizenship but lost it in the past;
+
+    - `Simplified naturalisation`: for special cases, e.g., wife or husband of a Swiss, child of a Swiss, etc.
+
+  - `Canton`: the canton where the Swiss citizenship has been acquired;
+
+  - `Year`: the year of acquisition of Swiss citizenship (from `2011` to `2020`); and,
+
+  - `Value`: the number of acquisition for all previous criteria.
+
+# Investigating the type of acquisition
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/chart_acquisition.png')
+```
+
+Looking at this chart, we see that there is two main type of acquisition (ordinary one and simplified one) for a total of 99.38%.
+As defined in the introduction, there is three type of acquisition that are really special cases (`Confirmation of the Swiss nationality`, `Naturalisation by adoption` and `Reintegration`).
+
+We will focus on these three in the next part and then we won't consider it anymore in order to focus on the two main types of acquisition.
+
+## Basic exploration of three less represented types of acquisiton
+
+Let's take a look at the following type of acquisition : `Confirmation of the Swiss nationality`, `Naturalization by adoption` and `Reintegration`. Since each type of acquisition are quite different, we will take a look at them one by one.
+
+### By previous citizenship
+
+#### `Confirmation of the Swiss nationality`
+
+First, note that there has been only `1452` confirmation between 2011 and 2020 which lead to a mean of `145.2` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then zoom for ones with value higher than 50.
+
+We can see that in the top 10, except for Brazil, there is only European countries, in particular the three first are bordering ones. **COMMENT ON THIS**
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/confirmation_previous_citizenship.png')
+```
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/confirmation_age_gender.png')
+```
+
+#### `Naturalization by adoption`
+
+As before, note that there has been `776` naturalization by adoption between 2011 and 2020 which lead to a mean of `77.6` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then zoom for ones with value higher than 25.
+
+We can see that for previous citizenship with higher numbers are not European, except for Russia and Germany. Ones with higher numbers are countries where poverty is far more present that in Switzerland, especially when we see that Ethiopia is almost 1/5 of the total. **COMMENT ON THIS**
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/adoption_previous_citizenship.png')
+```
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/adoption_age_gender.png')
+```
+
+#### `Reintegration`
+
+Note that there has been only `162` naturalization by adoption between 2011 and 2020 which lead to a mean of `16.2` per year. We first plot the total number of such citizens and then zoom for ones with value higher than 15.
+
+We can see that the top 4 is composed only by bordering countries which means that concerned individuals may have gone to these countries after losing their Swiss citizenship. We also see that `Stateless` appeared on y axis which means that the individual that obtained the Swiss citizenship had only Swiss nationality when he lost it.
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/reintegration_previous_citizenship.png')
+```
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/reintegration_age_gender.png')
+```
+
+### Over time
+
+We will now visualize time series of these three type of acquisitions. Beginning with `Confirmation of the Swiss nationality`, we see that there the number of such acquisition is decreasing since 2012 and has been divided by almost 4 in 9 years. **COMMENT ON THIS** For `Naturalization by adoption`, there has been a huge drop between 2013 and 2015. **COMMENT ON THIS** Finishing with `Reintegration`, numbers are slowly increasing throughout the years except for a peak in 2019 where the number seems extreme compared to other years. **COMMENT ON THIS**
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/over_time_rein_adop_conf.png')
+```
+
+*NEED TO COMPLETE AND MODIFY FROM HERE*
+
+# Exploration by ordinary and simplified naturalisation categorized by previous citizenship
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/ordin_simpl_previous_citizenship_percentage.png')
+```
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/ordin_simpl_previous_citizenship.png')
+```
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/ordin_simpl_proportion_previous_citizenship.png')
+```
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots_report_thomas/ordin_simpl_age_gender.png')
+```
