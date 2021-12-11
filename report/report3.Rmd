@@ -72,7 +72,7 @@ Let's take a look at the following type of acquisition : `Confirmation of the Sw
 
 ### `Confirmation of the Swiss nationality`
 
-First, note that there has been only `1452` confirmation between 2011 and 2020 which lead to a mean of `145.2` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then zoom for ones with value higher than 50.
+First, note that there has been only `1452` confirmation between 2011 and 2020 which lead to a mean of `145.2` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then look at all by age and gender.
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/confirmation_previous_citizenship.png')
@@ -90,7 +90,7 @@ Most of confirmation concerns persons aged less than 20, 90.22% of the total cou
 
 To acquire Swiss citizenship through adoption if the person adopted was under the age of majority (18 years) at the time of adoption.
 
-As before, note that there has been `776` naturalization by adoption between 2011 and 2020 which lead to a mean of `77.6` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then zoom for ones with value higher than 25.
+As before, note that there has been `776` naturalization by adoption between 2011 and 2020 which lead to a mean of `77.6` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then look at all by age and gender.
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/adoption_previous_citizenship.png')
@@ -108,7 +108,7 @@ We see that most of naturalization by adoption are acquired before 20 years, whi
 
 This type of acquisition is the less represented, there has been only 162 reinstatement of Swiss citizenship in 10 years. This concerns people that have previously held Swiss citizenship but lost it by forfeiting or relieving citizenship, or by marrying a foreign person. There is different criteria for reintegration based on where the concerned person lives. Some criteria are purely subjective ones.
 
-Note that there has been only `162` naturalization by adoption between 2011 and 2020 which lead to a mean of `16.2` per year. We first plot the total number of such citizens and then zoom for ones with value higher than 15.
+Note that there has been only `162` naturalization by adoption between 2011 and 2020 which lead to a mean of `16.2` per year. We first plot the total number of such citizens and then look at all by age and gender.
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/reintegration_previous_citizenship.png')
