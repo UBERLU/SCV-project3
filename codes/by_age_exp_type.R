@@ -49,3 +49,56 @@ p <- ggplot(new_age_2011,
   coord_flip() 
   
 p
+
+################## new
+
+new_age <- new_age %>%
+  mutate(Value = ifelse(Genre == "Female",
+                        Value, -Value))
+
+new_age <- new_age %>% 
+  mutate(category_age=cut(Age, breaks=c(-Inf, 9, 19, 29, 39, 49, 59, 69, 79, Inf), 
+                          labels=c("0 - 9","10 - 19","20 - 29","30 - 39","40 - 49","50 - 59", "60 - 69", "70 - 79", "80 +")))
+
+
+
+new_age <- new_age %>%
+  select(Year, Genre, category_age, Value, Type.of.acquisition) %>%
+  mutate(Genre = as.factor(Genre),Year = as.integer(Year), Cat_age = as.factor((category_age)),
+         Type.of.acquisition = as.factor(Type.of.acquisition)) %>%
+  group_by(Year, Genre, category_age, Type.of.acquisition) %>%
+  summarise(Value = sum(Value))
+
+
+
+##### plot
+ggplot(new_age,
+       aes(x = category_age, y = Value,
+           fill = interaction(Genre,Type.of.acquisition))) +
+  geom_col() +
+  theme_bw() + scale_colour_manual(values=c("#CC6666", "#7777DD")) +
+  theme(# legend.position = c(0.7,0.7),
+        plot.title = element_text(hjust = 0.5))  +
+  scale_y_continuous(breaks = seq(-10000, 10000, by = 1000), labels = abs) +
+  coord_flip() + transition_time(as.integer(Year)) + labs(x = "Age", y = "Count", fill = "Gender",
+                                                         title = "Swiss nationality")
+
+
+
+
+
+ggplot(new_age1,
+         aes(x = category_age, y = Value,
+             fill = Genre, )) +
+    geom_col() +
+    theme_bw() +
+    theme(legend.position = c(0.7,0.7),
+          plot.title = element_text(hjust = 0.5)) +
+    labs(x = "Age", y = "Count", fill = "Gender",
+         title = "Confirmation of the Swiss nationality") +
+    scale_y_continuous(breaks = seq(-10000, 10000, by = 1000), labels = abs) +
+    coord_flip() +
+    transition_time(as.integer(Year)) +
+    labs(title = 'Year: {frame_time}', x = 'Naturalisations per year', y = 'Age category') +
+    ease_aes('linear') 
+
