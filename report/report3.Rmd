@@ -44,7 +44,7 @@ This database is composed of the following:
 # Investigating the type of acquisition
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/chart_acquisition.png')
+knitr::include_graphics('plots/thomas/chart_acquisition.png')
 ```
 
 Looking at this chart, we see that there is two main type of acquisition (ordinary one and simplified one) for a total of 99.38%.
@@ -65,11 +65,11 @@ First, note that there has been only `1452` confirmation between 2011 and 2020 w
 We can see that in the top 10, except for Brazil, there is only European countries, in particular the three first are bordering ones. **COMMENT ON THIS**
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/confirmation_previous_citizenship.png')
+knitr::include_graphics('plots/thomas/confirmation_previous_citizenship.png')
 ```
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/confirmation_age_gender.png')
+knitr::include_graphics('plots/thomas/confirmation_age_gender.png')
 ```
 
 #### `Naturalization by adoption`
@@ -79,11 +79,11 @@ As before, note that there has been `776` naturalization by adoption between 201
 We can see that for previous citizenship with higher numbers are not European, except for Russia and Germany. Ones with higher numbers are countries where poverty is far more present that in Switzerland, especially when we see that Ethiopia is almost 1/5 of the total. **COMMENT ON THIS**
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/adoption_previous_citizenship.png')
+knitr::include_graphics('plots/thomas/adoption_previous_citizenship.png')
 ```
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/adoption_age_gender.png')
+knitr::include_graphics('plots/thomas/adoption_age_gender.png')
 ```
 
 #### `Reintegration`
@@ -93,11 +93,11 @@ Note that there has been only `162` naturalization by adoption between 2011 and 
 We can see that the top 4 is composed only by bordering countries which means that concerned individuals may have gone to these countries after losing their Swiss citizenship. We also see that `Stateless` appeared on y axis which means that the individual that obtained the Swiss citizenship had only Swiss nationality when he lost it.
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/reintegration_previous_citizenship.png')
+knitr::include_graphics('plots/thomas/reintegration_previous_citizenship.png')
 ```
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/reintegration_age_gender.png')
+knitr::include_graphics('plots/thomas/reintegration_age_gender.png')
 ```
 
 ### Over time
@@ -105,7 +105,7 @@ knitr::include_graphics('plots_report_thomas/reintegration_age_gender.png')
 We will now visualize time series of these three type of acquisitions. Beginning with `Confirmation of the Swiss nationality`, we see that there the number of such acquisition is decreasing since 2012 and has been divided by almost 4 in 9 years. **COMMENT ON THIS** For `Naturalization by adoption`, there has been a huge drop between 2013 and 2015. **COMMENT ON THIS** Finishing with `Reintegration`, numbers are slowly increasing throughout the years except for a peak in 2019 where the number seems extreme compared to other years. **COMMENT ON THIS**
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/over_time_rein_adop_conf.png')
+knitr::include_graphics('plots/thomas/over_time_rein_adop_conf.png')
 ```
 
 *NEED TO COMPLETE AND MODIFY FROM HERE*
@@ -113,17 +113,17 @@ knitr::include_graphics('plots_report_thomas/over_time_rein_adop_conf.png')
 # Exploration by ordinary and simplified naturalisation categorized by previous citizenship
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/ordin_simpl_previous_citizenship_percentage.png')
+knitr::include_graphics('plots/thomas/ordin_simpl_previous_citizenship_percentage.png')
 ```
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/ordin_simpl_previous_citizenship.png')
+knitr::include_graphics('plots/thomas/ordin_simpl_previous_citizenship.png')
 ```
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/ordin_simpl_proportion_previous_citizenship.png')
+knitr::include_graphics('plots/thomas/ordin_simpl_proportion_previous_citizenship.png')
 ```
 
 ```{r echo=FALSE, out.width='60%'}
-knitr::include_graphics('plots_report_thomas/ordin_simpl_age_gender.png')
+knitr::include_graphics('plots/thomas/ordin_simpl_age_gender.png')
 ```
