@@ -37,14 +37,14 @@ library(ggplot2)
 library(gganimate)
 
 p <- ggplot(new_age_2011,
-            aes(x = category_age, y = Value,
+            aes(x = category_age, y = total,
                 fill = interaction(Genre,Type.of.acquisition))) +
   geom_col() +
   theme_bw() +
   theme(#legend.position = c(0.7,0.7),
         plot.title = element_text(hjust = 0.5)) +
   labs(x = "Age", y = "Count", fill = "Gender",
-       title = "Confirmation of the Swiss nationality") +
+       title = "Confirmation of the Swiss nationality") + scale_fill_brewer(palette = c("", "")) +
   scale_y_continuous(breaks = seq(-10000, 10000, by = 1000), labels = abs) +
   coord_flip() 
   
@@ -76,15 +76,17 @@ ggplot(new_age,
        aes(x = category_age, y = Value,
            fill = interaction(Genre,Type.of.acquisition))) +
   geom_col() +
-  theme_bw() + scale_colour_manual(values=c("#CC6666", "#7777DD")) +
+  theme_bw() + scale_fill_brewer(palette = c("Dark2")) +
   theme(# legend.position = c(0.7,0.7),
         plot.title = element_text(hjust = 0.5))  +
   scale_y_continuous(breaks = seq(-10000, 10000, by = 1000), labels = abs) +
   coord_flip() + transition_time(as.integer(Year)) + labs(x = "Age", y = "Count", fill = "Gender",
                                                          title = "Swiss nationality")
 
-
-
+### TIme series 
+# Chnage colors : gif et plotly
+# Commentaire 
+# Bubble 
 
 
 ggplot(new_age1,
@@ -98,7 +100,7 @@ ggplot(new_age1,
          title = "Confirmation of the Swiss nationality") +
     scale_y_continuous(breaks = seq(-10000, 10000, by = 1000), labels = abs) +
     coord_flip() +
-    transition_time(as.integer(Year)) +
+    transition_time(as.integer(Year)) + scale_fill_brewer(palette = c("Dark2")) +
     labs(title = 'Year: {frame_time}', x = 'Naturalisations per year', y = 'Age category') +
     ease_aes('linear') 
 

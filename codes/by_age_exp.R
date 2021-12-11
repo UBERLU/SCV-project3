@@ -36,7 +36,7 @@ library(ggplot2)
 library(gganimate)
 
 p <- ggplot(new_age_2011,
-            aes(x = category_age, y = Value,
+            aes(x = category_age, y = total,
                 fill = Genre)) +
   geom_col() +
   theme_bw() +
