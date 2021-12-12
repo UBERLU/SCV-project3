@@ -36,6 +36,9 @@ new_age_2011 <- new_age_2011 %>%
 library(ggplot2)
 library(gganimate)
 
+
+
+
 p <- ggplot(new_age_2011,
             aes(x = category_age, y = total,
                 fill = interaction(Genre,Type.of.acquisition))) +
@@ -43,12 +46,23 @@ p <- ggplot(new_age_2011,
   theme_bw() +
   theme(#legend.position = c(0.7,0.7),
         plot.title = element_text(hjust = 0.5)) +
-  labs(x = "Age", y = "Count", fill = "Gender",
-       title = "Confirmation of the Swiss nationality") + scale_fill_brewer(palette = c("", "")) +
+  labs(x = "Age", y = "Number of naturalisations", fill = "Type of naturalisations by gender",
+       title = "Naturalisation by gender and age") + 
+  scale_fill_brewer(palette = c("RdGy")) +
   scale_y_continuous(breaks = seq(-10000, 10000, by = 1000), labels = abs) +
-  coord_flip() 
-  
+  coord_flip()  
 p
+
+library(grid)
+# Create a text
+grob <- grobTree(textGrob(c("Male","Female"), x=c(0.3,0.5),  y=c(0.95,0.95), 
+                          hjust=0,
+                          gp=gpar(col="slategray4", fontsize=10, fontface="bold")))
+# Plot
+p <- p + annotation_custom(grob) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 0.9))
+
+ggplotly(p)
 
 ################## new
 
@@ -76,17 +90,20 @@ ggplot(new_age,
        aes(x = category_age, y = Value,
            fill = interaction(Genre,Type.of.acquisition))) +
   geom_col() +
-  theme_bw() + scale_fill_brewer(palette = c("Dark2")) +
+  theme_bw() + scale_fill_brewer(palette = c("RdGy")) +
   theme(# legend.position = c(0.7,0.7),
         plot.title = element_text(hjust = 0.5))  +
   scale_y_continuous(breaks = seq(-10000, 10000, by = 1000), labels = abs) +
-  coord_flip() + transition_time(as.integer(Year)) + labs(x = "Age", y = "Count", fill = "Gender",
-                                                         title = "Swiss nationality")
+  coord_flip() + 
+  transition_time(as.integer(Year)) + 
+  labs(x = "Age", y = "Frequency", fill = "Gender", 
+       title = "Naturalisation by Age and Gender in: {frame_time}") +
+  annotate("text", x=, y=13000, label= "Female") +
+  annotate("text", x=, y=13000, label= "Male") 
 
 ### TIme series 
 # Chnage colors : gif et plotly
 # Commentaire 
-# Bubble 
 
 
 ggplot(new_age1,
@@ -104,3 +121,33 @@ ggplot(new_age1,
     labs(title = 'Year: {frame_time}', x = 'Naturalisations per year', y = 'Age category') +
     ease_aes('linear') 
 
+
+
+
+
+
+
+p <- ggplot(new_age,
+            aes(x = category_age, y = total,
+                fill = interaction(Genre,Type.of.acquisition))) +
+  geom_col() +
+  theme_bw() +
+  theme(#legend.position = c(0.7,0.7),
+    plot.title = element_text(hjust = 0.5)) +
+  labs(x = "Age", y = "Number of naturalisations", fill = "Type of naturalisations by gender",
+       title = "Naturalisation by gender and age") + 
+  scale_fill_brewer(palette = c("RdGy")) +
+  scale_y_continuous(breaks = seq(-100000, 100000, by = 10000), labels = abs) +
+  coord_flip()  
+p
+
+library(grid)
+# Create a text
+grob <- grobTree(textGrob(c("Male","Female"), x=c(0.3,0.5),  y=c(0.95,0.95), 
+                          hjust=0,
+                          gp=gpar(col="slategray4", fontsize=10, fontface="bold")))
+# Plot
+p <- p + annotation_custom(grob) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 0.9))
+
+ggplotly(p)

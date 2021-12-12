@@ -1,0 +1,88 @@
+---
+title: "Time_series"
+author: "Daryna"
+date: "12/12/2021"
+output: html_document
+---
+
+```{r , echo=FALSE, warning=FALSE, message = FALSE}
+library(plotly)
+library(tidyverse)
+library(ggplot2)
+library(pals)
+library(RColorBrewer)
+pacman::p_load(tidyverse, pacman, ggmap, janitor, sf, mapview, leaflet, rgdal, RColorBrewer,lubridate, boot, broom)
+```
+
+
+```{r , echo=FALSE}
+load("/Users/darynabilodid/Documents/GitHub/SCV-project3/report/data_ready.RData")
+```
+
+
+```{r , echo=FALSE}
+total_by_year <- data_ready %>%
+  group_by(year) %>%
+  summarise(total = sum(total))
+```
+
+
+```{r , echo=FALSE}
+p <- ggplot(total_by_year, aes(x = year, y = total)) + geom_line()+
+  geom_point() + scale_x_continuous(breaks=seq(2011, 2020, 1)) + ylim(0,50000) + theme_bw() + labs(title = "Total number of naturalisations over time",
+       x = "Year",
+       y = "") + theme(plot.title = element_text(hjust = 0.5))
+
+ggplotly(p)
+```
+
+```{r , echo=FALSE, warning=FALSE, message = FALSE}
+p <- ggplot(data_ready, aes(x = year, y = total)) + geom_point() + geom_smooth() +
+ scale_x_continuous(breaks=seq(2011, 2020, 1)) + ylim(0,11000) + theme_bw() + labs(title = "Total number of naturalisations over time",
+       x = "Year",
+       y = "") + theme(plot.title = element_text(hjust = 0.5))
+ggplotly(p)
+```
+
+```{r , echo=FALSE}
+p <- ggplot(data_ready, aes(x=as.factor(year), y=total)) + 
+  geom_boxplot() + labs(title = "Total number of naturalisations over time",
+       x = "Year",
+       y = "") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) 
+ggplotly(p)
+```
+
+
+
+
+```{r, echo=FALSE}
+p <- ggplot(data_ready, aes(x = year,
+                     y = total,
+                     fill = canton)) +
+  geom_area(color = "black") +
+  labs(title = "Total number of naturalisations by canton over time",
+       subtitle = "2011 - 2020",
+       x = "Year",
+       y = "",
+       fill = "Canton") +
+  scale_x_continuous(breaks=seq(2011, 2020, 1)) +
+  theme_minimal() + theme(axis.text.x=element_text(angle=45, hjust=1)) + theme(plot.title = element_text(hjust = 0.5))
+ggplotly(p)
+```
+
+
+```{r, echo=FALSE}
+p <- ggplot(data_ready, aes(x = year,
+                            y = relative,
+                            fill = canton)) +
+  geom_area(color = "black") +
+  labs(title = "Relative number of naturalisations by Canton over time",
+       subtitle = "2011 - 2020",
+       x = "Year",
+       y = "",
+       fill = "Canton") +
+  scale_x_continuous(breaks=seq(2011, 2020, 1)) +
+  theme_minimal() + theme(axis.text.x=element_text(angle=45, hjust=1)) + theme(plot.title = element_text(hjust = 0.5))
+ggplotly(p)
+```
+
