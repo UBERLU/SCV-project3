@@ -157,17 +157,35 @@ knitr::include_graphics('plots/thomas/over_time_rein_adop_conf.png')
 
 In this section we will explore ordinary and simplified naturalization and compare them since these two type of acquisition are the most common ones. We can also compare these two since the procedure is quite the same.
 
+In the following plot we visualize the count of ordinary and simplified naturalization by previous citizenship for the 50 most represented one.
+European countries are most presented.
+Note that the top 6 of these countries represent more than half over all naturalization between 2011 and 2020.
+We see that there is 3 of these 6 that are bordering ones (Germany, France and Italy).
+Numbers are proportional to the number of foreigners from each countries.
+
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/ordin_simpl_previous_citizenship_percentage.png')
 ```
+
+In the next plot we can compare count for ordinary and simplified naturalization by previous citizenship ordered as before.
+It seems that there is more ordinary naturalization for almost all previous citizenship.
+This is due to the fact that simplified naturalization is more restrictive.
+It will be clearer in the next plot.
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/ordin_simpl_previous_citizenship.png')
 ```
 
+There is really few previous citizenship for which there has been more simplified than ordinary naturalization (Brazil, Thailand, Ukraine, etc).
+An example to this fact could be that the population which acquire Swiss citizenship is the third generation form these countries to be in Switzerland and thus have access to simplified instead of ordinary naturalization.
+
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/ordin_simpl_proportion_previous_citizenship.png')
 ```
+
+Now taking a look over age class, we see that for simplified naturalization middle age (30-49) is the most represented, by 70.51% against 32.6% for ordinary naturalization.
+This could be due to the fact that simplified is accessible to husband or wife of Swiss citizen and thus is more frequent for middle class age.
+On the contrary, for ordinary naturalization, it is more homogeneous over all class, which reflects the fact that it is the more general acquisition and thus, doesn't concern a really particular portion of the population that wishes to acquire Swiss citizenship. 
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/ordin_simpl_age_gender.png')
