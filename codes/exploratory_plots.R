@@ -10,6 +10,156 @@ library(plotly)
 # Load the whole data containing
 load("/Users/darynabilodid/Documents/GitHub/SCV-project3/codes/my_data_French.RData")
 
+### 2 additional map plots
+
+data_ordinary  = subset(my_data, Type.of.acquisition == "Ordinary naturalisation")
+data_simplified  = subset(my_data, Type.of.acquisition == "Simplified naturalisation")
+
+data_ordinary_map <- data_ordinary %>%
+  group_by(Canton) %>%
+  summarise(total_13 = sum(Value))
+
+
+data_simplified_map <- data_simplified %>%
+  group_by(Canton) %>%
+  summarise(total_13 = sum(Value))
+
+
+swiss_cantons <- st_read("~/Documents/GitHub/SCV-project3/data/for map plot/G1K09.shp")
+
+
+
+levels(data_ordinary_map$Canton)  <- c("CH", 
+                          "ZH", "BE", "LU", "UR", "SZ", "OW", 
+                          "NW", "GL", "ZG", "FR", "SO", "BS", 
+                          "BL", "SH", "AR", "AI", "SG", "GR", 
+                          "AG", "TG", "TI", "VD", "VS", "NE", 
+                          "GE", "JU", 
+                          "NA")
+
+levels(data_simplified_map$Canton)  <- c("CH", 
+                                       "ZH", "BE", "LU", "UR", "SZ", "OW", 
+                                       "NW", "GL", "ZG", "FR", "SO", "BS", 
+                                       "BL", "SH", "AR", "AI", "SG", "GR", 
+                                       "AG", "TG", "TI", "VD", "VS", "NE", 
+                                       "GE", "JU", 
+                                       "NA")
+
+data_ordinary_map <- swiss_cantons %>% 
+  left_join(data_ordinary_map, c("KURZ" = "Canton"))
+
+
+data_simplified_map <- swiss_cantons %>% 
+  left_join(data_simplified_map, c("KURZ" = "Canton"))
+
+
+##### ORDINARY
+ggplot()+
+  geom_sf(data = data_ordinary_map, aes(fill = total_13), size = 0.3) + 
+  theme_void() + 
+  ggrepel::geom_label_repel(
+    data = data_ordinary_map,
+    aes(label = paste0(KURZ,":",round(total_13, digits = 0)), 
+        geometry = geometry),
+    stat = "sf_coordinates",
+    min.segment.length = 0.2,
+    colour = "#541f3f",
+    size = 3,
+    segment.alpha = 0.5
+  ) +
+  scale_fill_continuous(low="white", high="#2166AC") +
+  labs(title = "Ordinary Naturalisations between 2011 to 2020") + theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = c(0.9,0.9)) + labs(fill='Number of Naturalisations') 
+
+
+##### SIMPLIFIED
+ggplot()+
+  geom_sf(data = data_simplified_map, aes(fill = total_13), size = 0.3) + 
+  theme_void() + 
+  ggrepel::geom_label_repel(
+    data = data_simplified_map,
+    aes(label = paste0(KURZ,":",round(total_13, digits = 0)), 
+        geometry = geometry),
+    stat = "sf_coordinates",
+    min.segment.length = 0.2,
+    colour = "#541f3f",
+    size = 3,
+    segment.alpha = 0.5
+  ) +
+  scale_fill_continuous(low="white", high="#2166AC") +
+  labs(title = "Simplified Naturalisations between 2011 to 2020") + theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = c(0.9,0.9)) + labs(fill='Number of Naturalisations') 
+
+
+################## RELATIVE
+## Now with relative data
+population <- read_csv("/Users/darynabilodid/Documents/GitHub/SCV-project3/data/population_by_year/pop_data.csv")
+
+# Get the sum of population over the years
+population$all_pop_y <- rowSums( population[,2:11] )
+
+# Join the table
+data_ordinary_map <- data_ordinary_map %>% 
+  left_join(population, c("KURZ" = "canton"))
+
+data_simplified_map <- data_simplified_map %>% 
+  left_join(population, c("KURZ" = "canton"))
+
+
+data_ordinary_map$all_pop_y <- as.numeric(data_ordinary_map$all_pop_y)
+data_simplified_map$all_pop_y <- as.numeric(data_simplified_map$all_pop_y)
+
+
+data_ordinary_map <- data_ordinary_map %>%
+  mutate(relative_total = (total_13/(all_pop_y))*100)
+
+data_simplified_map <- data_simplified_map %>%
+  mutate(relative_total = (total_13/(all_pop_y))*100)
+
+
+## Relative map
+ggplot()+
+  geom_sf(data = data_ordinary_map, aes(fill = relative_total), size = 0.3) + 
+  theme_void() + 
+  ggrepel::geom_label_repel(
+    data = data_ordinary_map,
+    aes(label = paste0(KURZ,":",round(relative_total, digits = 3)), 
+        geometry = geometry),
+    stat = "sf_coordinates",
+    min.segment.length = 0.2,
+    colour = "#541f3f",
+    size = 3,
+    segment.alpha = 0.5
+  ) +
+  scale_fill_continuous(low="white", high="#2166AC") +
+  labs(title = "Relative number of Ordinary Naturalisations between 2011 and 2020") +
+  theme(legend.title = element_blank()) +  theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = c(0.9,0.9)) + labs(fill='Relative Number') 
+
+
+ggplot()+
+  geom_sf(data = data_simplified_map, aes(fill = relative_total), size = 0.3) + 
+  theme_void() + 
+  ggrepel::geom_label_repel(
+    data = data_simplified_map,
+    aes(label = paste0(KURZ,":",round(relative_total, digits = 3)), 
+        geometry = geometry),
+    stat = "sf_coordinates",
+    min.segment.length = 0.2,
+    colour = "#541f3f",
+    size = 3,
+    segment.alpha = 0.5
+  ) +
+  scale_fill_continuous(low="white", high="#2166AC") +
+  labs(title = "Relative number of Simplified Naturalisations between 2011 and 2020") +
+  theme(legend.title = element_blank()) +  theme(plot.title = element_text(hjust = 0.5))+
+  theme(legend.position = c(0.9,0.9)) + labs(fill='Relative Number') 
+
+#########
+
+
+
+
 data_2011  = subset(my_data, Year == 2011)
 data_2012  = subset(my_data, Year == 2012)
 data_2013  = subset(my_data, Year == 2013)
