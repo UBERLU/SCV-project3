@@ -306,6 +306,24 @@ On the contrary, for ordinary naturalization, it is more homogeneous over all cl
 knitr::include_graphics('plots/thomas/ordin_simpl_age_gender.png')
 ```
 
+**Je les mets toutes pour le moment**
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots/daryna/plot_map_ord.png')
+```
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots/daryna/relat_ord.png')
+```
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots/daryna/simpfied_map.png')
+```
+
+```{r echo=FALSE, out.width='60%'}
+knitr::include_graphics('plots/daryna/relat_simplified.png')
+```
+
 ```{r echo=FALSE, out.width='50%'}
 knitr::include_graphics('plots/thomas/over_time_ordin_simpl.png')
 ```
