@@ -16,7 +16,7 @@ pacman::p_load(tidyverse, pacman, ggmap, janitor, sf, mapview, leaflet, rgdal, R
 
 
 ```{r , echo=FALSE}
-load("/Users/darynabilodid/Documents/GitHub/SCV-project3/report/data_ready.RData")
+load("data_ready.RData")
 ```
 
 
@@ -45,8 +45,9 @@ ggplotly(p)
 ```
 
 ```{r , echo=FALSE}
-p <- ggplot(data_ready, aes(x=as.factor(year), y=total)) + 
-  geom_boxplot() + labs(title = "Total number of naturalisations over time",
+p <- ggplot(data_ready, aes(x=as.factor(year), y=total)) +
+  geom_boxplot() + 
+  labs(title = "Total number of naturalisations over time",
        x = "Year",
        y = "") + theme_bw() + theme(plot.title = element_text(hjust = 0.5)) 
 ggplotly(p)
