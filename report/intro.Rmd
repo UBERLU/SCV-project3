@@ -60,6 +60,32 @@ We notice that the age groups which tend to have the highest numbers of naturali
 The gif represents the change of the composition over the years of the number of naturalization by gender and the age groups. We notice, as stated previously, that there seems to been overall increase before 2017 followed by a decrease. The composition seems to stay similar over the years,but minor changes happen within the groups. The rest of the report concentrates more thoroughly on each group depeng onthe type of naturalization.
 
 
+# Bibliography
+
+- <a href="https://www.bfs.admin.ch/bfs/en/home.html">FSO</a> :
+
+  - <a href="https://www.bfs.admin.ch/bfs/en/home/statistics/catalogues-databases/data.assetdetail.18424604.html">Acquisition of Swiss citizenship by canton, type of acquisition, sex, age and previous citizenship</a>
+  
+  - <a href="https://www.bfs.admin.ch/bfs/en/home/statistics/population/effectif-change.assetdetail.18424662.html">Demographic balance by institutional units</a>
+  
+  - <a href="https://www.bfs.admin.ch/bfs/en/home/statistics/regional-statistics/regional-portraits-key-figures/cantons.assetdetail.15864481.html">Regional comparison of selected indicators, 2021 (cantons)</a>
+  
+  - <a href="https://www.bfs.admin.ch/bfs/en/home/services/geostat/swiss-federal-statistics-geodata/administrative-boundaries/generalized-boundaries-local-regional-authorities.html">Generalized boundaries of local and regional authorities</a>
+  
+  - <a href="https://www.bfs.admin.ch/bfs/en/home/statistics/population/migration-integration/foreign.assetdetail.18404677.html">Permanent and non-permanent resident population by canton, residence permit, sex, age class and citizenship</a>
+
+- <a href="https://www.swissinfo.ch/eng">Swiss info</a>
+
+  - <a href="https://www.swissinfo.ch/eng/society/goodbye-switzerland--hello-world-/46652444">Goodbye Switzerland, hello world!</a>
+  
+  - <a href="https://www.swissinfo.ch/eng/society/migration-series-part-1-_who-are-the-25-foreign-population-in-switzerland/42412156">Defining the 25% foreign population in Switzerland</a>
+
+- <a href="https://www.r-graph-gallery.com">r-graph-gallery</a>
+
+- <a href="https://www.bj.admin.ch/bj/en/home.html">FOJ</a> - Directive de l’Autorité centrale fédérale en matière d’adoption internationale du 4 juillet 2016 relative aux agréments en vue de l’accueil d’enfants d’Ethiopie Art. 2 al. 1 let. c et d de l’ordonnance sur l’adoption (OAdo, RS 211.221.36)
+
+- Fedlex - <a href="https://www.fedlex.admin.ch/eli/cc/2016/404/en">Federal Act
+on Swiss Citizenship</a>
 
 
 
