@@ -27,8 +27,24 @@ total_by_year <- data_ready %>%
 ```
 
 
+```{r, echo=FALSE}
+total_by_year <- total_by_year %>%
+  rename(Year = year,
+         Total = total)
+```
+
+
+```{r, echo=FALSE}
+data_ready <- data_ready %>%
+  rename(Year = year,
+         Total = total,
+         Canton = canton,
+         Relative = relative)
+```
+
+
 ```{r , echo=FALSE}
-p <- ggplot(total_by_year, aes(x = year, y = total)) + geom_line()+
+p <- ggplot(total_by_year, aes(x = Year, y = Total)) + geom_line()+
   geom_point() + scale_x_continuous(breaks=seq(2011, 2020, 1)) + ylim(0,50000) + theme_bw() + labs(title = "Total number of naturalisations over time",
        x = "Year",
        y = "") + theme(plot.title = element_text(hjust = 0.5))
@@ -37,7 +53,7 @@ ggplotly(p)
 ```
 
 ```{r , echo=FALSE, warning=FALSE, message = FALSE}
-p <- ggplot(data_ready, aes(x = year, y = total)) + geom_point() + geom_smooth() +
+p <- ggplot(data_ready, aes(x = Year, y = Total)) + geom_point() + geom_smooth() +
  scale_x_continuous(breaks=seq(2011, 2020, 1)) + ylim(0,11000) + theme_bw() + labs(title = "Total number of naturalisations over time",
        x = "Year",
        y = "") + theme(plot.title = element_text(hjust = 0.5))
@@ -45,7 +61,7 @@ ggplotly(p)
 ```
 
 ```{r , echo=FALSE}
-p <- ggplot(data_ready, aes(x=as.factor(year), y=total)) +
+p <- ggplot(data_ready, aes(x=as.factor(Year), y=Total)) +
   geom_boxplot() + 
   labs(title = "Total number of naturalisations over time",
        x = "Year",
@@ -57,9 +73,9 @@ ggplotly(p)
 
 
 ```{r, echo=FALSE}
-p <- ggplot(data_ready, aes(x = year,
-                     y = total,
-                     fill = canton)) +
+p <- ggplot(data_ready, aes(x = Year,
+                     y = Total,
+                     fill = Canton)) +
   geom_area(color = "black") +
   labs(title = "Total number of naturalisations by canton over time",
        subtitle = "2011 - 2020",
@@ -73,9 +89,9 @@ ggplotly(p)
 
 
 ```{r, echo=FALSE}
-p <- ggplot(data_ready, aes(x = year,
-                            y = relative,
-                            fill = canton)) +
+p <- ggplot(data_ready, aes(x = Year,
+                            y = Relative,
+                            fill = Canton)) +
   geom_area(color = "black") +
   labs(title = "Relative number of naturalisations by Canton over time",
        subtitle = "2011 - 2020",
