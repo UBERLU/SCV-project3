@@ -96,7 +96,7 @@ First, note that there has been only `1452` confirmation between 2011 and 2020 w
 knitr::include_graphics('plots/thomas/confirmation_previous_citizenship.png')
 ```
 
-We can see that in the top 10, except for Brazil, there is only European countries, in particular the three first are bordering ones. **COMMENT ON THIS**
+We can see that in the top 10, except for Brazil, there is only European countries, in particular the three first are bordering ones. This may be due to the fact that most of expatriation of Swiss citizen is in European countries, particularly in western Europe (Germany, France, Italy, Spain).
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/confirmation_age_gender.png')
@@ -114,13 +114,16 @@ As before, note that there has been `776` naturalization by adoption between 201
 knitr::include_graphics('plots/thomas/adoption_previous_citizenship.png')
 ```
 
-We can see that for previous citizenship with higher numbers are not European, except for Russia and Germany. Ones with higher numbers are countries where poverty is far more present that in Switzerland, especially when we see that Ethiopia is almost 1/5 of the total. **COMMENT ON THIS**
+We can see that for previous citizenship with higher numbers are not European, except for Russia and Germany. Ones with higher numbers are countries where poverty is far more present that in Switzerland, especially when we see that Ethiopia is almost 1/5 of the total.
+Ethiopia is the first because during several years a lot of Ethiopian child were adopted over the world, this number was multiplied by 10 around 2010.
+However, there has been some problems with Ethiopian adoption due to the fact that a lot of child were kidnapped.
+We will come back to this when exploring adoption over time.
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/adoption_age_gender.png')
 ```
 
-We see that most of naturalization by adoption are acquired before 20 years, which is relevant with what has been written at the beginning of this section since the concerned person has to be adopted before having attained majority. Note that only 7 persons were 20 and more, so 0.9% of total adopted naturalization concerns.
+We see that most of naturalization by adoption are acquired before 20 years, which is relevant with what has been written at the beginning of this section since the concerned person has to be adopted before having attained majority. Note that only 7 persons were 20 or more, so 0.9% of total adopted naturalization concerns. This is due to the fact that to acquire Swiss citizenship by adoption, the procedure is simplified until 18 years.
 
 ### `Reintegration`
 
@@ -142,13 +145,13 @@ The most represented class of age is people aged between 30 and 39 with a count 
 
 ### Over time
 
-We will now visualize time series of these three type of acquisitions. Beginning with `Confirmation of the Swiss nationality`, we see that there the number of such acquisition is decreasing since 2012 and has been divided by almost 4 in 9 years. **COMMENT ON THIS** For `Naturalization by adoption`, there has been a huge drop between 2013 and 2015. **COMMENT ON THIS** Finishing with `Reintegration`, numbers are slowly increasing throughout the years except for a peak in 2019 where the number seems extreme compared to other years. **COMMENT ON THIS**
+We will now visualize time series of these three type of acquisitions. Beginning with `Confirmation of the Swiss nationality`, we see that the number of such acquisition is decreasing since 2012 and has been divided by almost 4 in 9 years. **COMMENT ON THIS : trouve rien, très peu d'informations à ce sujet** For `Naturalization by adoption`, there has been a huge drop between 2013 and 2015.
+This is due to the fact that there has been new regulations concerning adoption of Ethiopian child form the Ethiopian government in 2014 (see **source directive du 4 juillet 2016 (adoption)**).
+Finishing with `Reintegration`, numbers are slowly increasing throughout the years except for a peak in 2019 where the number seems extreme compared to other years. **COMMENT ON THIS : trouve rien...**
 
 ```{r echo=FALSE, out.width='60%'}
 knitr::include_graphics('plots/thomas/over_time_rein_adop_conf.png')
 ```
-
-*NEED TO COMPLETE AND MODIFY FROM HERE*
 
 # Exploration by ordinary and simplified naturalization categorized
 
