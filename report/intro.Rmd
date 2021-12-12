@@ -15,7 +15,9 @@ For this report, we are using 2 complementary datasets: the annual population of
 
 
 
-First, to form an idea about our research question, let's have a look on how the number of naturalizations is distributed accross Switzerland. The easisest way to do that in terms of visualization, is to plot our data as a geographic map of Switzerland and draw borders between cantons. The map represents the total number of people who acquired a Swiss citizenship between 2011 and 2020 within each canton. The magnitude is represented by the darkness of the blue color: the darker the filling of the canton is - the more people obtained a Swiss passport in that canton. Over hte 9 years, the cantons with the highest numbers of naturalizations are: Zurich, Vaud and Geneva. These findings make sense as each of these 3 cantons contain big cities in terms of population: Zurich, Lausanne and Geneva. These cities, in fact, hold a big concentration of foreign citizens since many international organizations, headquarters of multinational companies and universities are based in them.
+First, to form an idea about our research question, let's have a look on how the number of naturalization is distributed across Switzerland. The easiest way to do that in terms of visualization, is to plot our data as a geographic map of Switzerland and draw borders between cantons. The map represents the total number of people who acquired a Swiss citizenship between 2011 and 2020 within each canton. The magnitude is represented by the darkness of the blue color: the darker the filling of the canton is - the more people obtained a Swiss passport in that canton. 
+
+Over the 9 years, the cantons with the highest numbers of naturalization are: Zurich, Vaud and Geneva. These findings make sense as each of these 3 cantons contain big cities in terms of population: Zurich, Lausanne and Geneva. These cities, in fact, hold a big concentration of foreign citizens since many international organizations, headquarters of multinational companies and universities are based in them.
 
 We can visualize the same map as a gif which changes the filling of cantons depending on the year. We notice that through years, cantons of Switzerland with the most naturalizations are Zurich, Geneva and Vaud. We also notice that through years, the difference in numbers between cantons tends to change. 
 
@@ -36,7 +38,7 @@ Comparing the cantons between themselves without accounting for their difference
 We notice that the cantons with the highest rates are still Geneva, Vaud and Zurich, but the order changes. Also, we notice that cantons of Valais and Ticino have also high rates. Overall, we notice that the difference, in terms of magnitude, seems to be much lower than before (when we didn't account for the population.)
 
 
-The gif represening the change by years of the naturalization's rate for each canton, shows that the difference in rates seems to change over year and to be higher from 2015 to 2017 compared to other years.
+The gif representing the change by years of the naturalization's rate for each canton, shows that the difference in rates seems to change over year and to be higher from 2015 to 2017 compared to other years.
 
 
 
@@ -50,10 +52,12 @@ By inspecting the relative number over time for each canton, we notice again tha
 
 
 
-The plot explores the composition of the total number of naturalizations between 2011 and 2020 by gender and the age group. Within each group, we visualize the type of the naturalization that was performed. We notice that the age groups which tend to have the highest numbers of naturalizations belong to the groups of 10-19, 30-39 and 40-49. We may assume, that these age categories correspond to working professionals and their children. Also, we notice that for age groups of 30-39 and 40-49 the shares od ordinary and simplified naturalizations are very close, for other gorups, the ordinary naturalization seems to be much more higher. Also, the simplified naturalization tend to be slighlkt higher for females belonging to the age groups 30-39 and 40-49 than males of the same age groups. Another interesting finding, is that the 3 least popular types of naturalizations: specifically, naturalization by adoption, naturalization by confirmation of the Swiss nationality and Reintegration, are inexistant for most of the age groups. Naturalization by adoption and naturalization by confirmation of the Swiss nationality arepresent for age groups of 0-9 and 10-19. The share of naturalization by integration seems to be very small for all the age groups.
+The plot explores the composition of the total number of naturalizations between 2011 and 2020 by gender and the age group. Within each group, we visualize the type of the naturalization that was performed.
+
+We notice that the age groups which tend to have the highest numbers of naturalizations belong to the groups of 10-19, 30-39 and 40-49. We may assume, that these age categories correspond to working professionals and their children. Also, we notice that for age groups of 30-39 and 40-49 the shares od ordinary and simplified naturalizations are very close, for other gorups, the ordinary naturalization seems to be much more higher. Also, the simplified naturalization tend to be slighlkt higher for females belonging to the age groups 30-39 and 40-49 than males of the same age groups. Another interesting finding, is that the 3 least popular types of naturalizations: specifically, naturalization by adoption, naturalization by confirmation of the Swiss nationality and Reintegration, are inexistant for most of the age groups. Naturalization by adoption and naturalization by confirmation of the Swiss nationality arepresent for age groups of 0-9 and 10-19. The share of naturalization by integration seems to be very small for all the age groups.
 
 
-THe gif represents the change of the composition over the years of the number of naturalizations by gender and the age groups. We notice, as stated previously, that there seems to been overall increase before 2017 followed by a deacrease. The composition seems to stay similar over the years,but minor changes happen within the groups. The rest of the report concentrates more thoroughly on each group depeng onthe type of naturalization.
+The gif represents the change of the composition over the years of the number of naturalization by gender and the age groups. We notice, as stated previously, that there seems to been overall increase before 2017 followed by a decrease. The composition seems to stay similar over the years,but minor changes happen within the groups. The rest of the report concentrates more thoroughly on each group depeng onthe type of naturalization.
 
 
 
