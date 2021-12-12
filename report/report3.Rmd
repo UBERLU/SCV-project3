@@ -381,7 +381,7 @@ knitr::include_graphics('plots/daryna/plot_map_ord.png')
 ```
 </center>
 
-We see that in both Zurich is the one with higher counts. With 17.89% of total population of Switzerland at the beginning of 2020 it is likely to see such value.
+We see that in both cases Zurich is the one with higher counts. With 17.89% of total population of Switzerland at the beginning of 2020 it is likely to see such value.
 Next come Vaud and Geneva, for the latter it is known that the city of Geneva is an international place, thus there is a higher foreigner part of the population than in other Canton.
 Taking into account that Vaud is the only Swiss Canton bordering Geneva, internationality of Geneva impacts it directly.
 
