@@ -30,7 +30,7 @@ The aim of this report is to analyze how the naturalization in Switzerland evolv
 
 The following analysis is performed using the data that is provided by the Swiss Federal Statistical Office (referred as FSO later in the report), which is the national competence center for official statistics in Switzerland. The analysis is performed on the data generated between 2011 and 2020.
 
-We are particularly interested in this interval of time because in June 2014, the Swiss Parliament updated the Federal Act on Swiss Citizenship (RS 141.0) and passed a law that restricts heavily the process of naturalization and adds new conditions to it. The law entered in force in January 2018. One of the motivation of this report is to verify and inspect the effects of this law on the number of naturalization.
+We are particularly interested in this interval of time because in June 2014, the Swiss Parliament updated the Federal Act on Swiss Citizenship (RS 141.0) and passed a law that restricts heavily the process of naturalization and adds new conditions to it. The law entered in force in January 2018. One of the motivations of this report is to verify and inspect the effects of this law on the number of naturalization.
 
 For this report, we are using 2 complementary dataset: the annual population of Switzerland by cantons and the geographical characteristics of the cantons. Both of the dataset are provided by the FSO. The main dataset that is used for the report is composed of the following variables:
 
@@ -141,7 +141,7 @@ ggplotly(p)
 
 We notice that an important share of the points is situated below 3000 and every year has 2 - 4 outliers. Over the years, the conditional mean seems to slightly increase until 2017 and decrease after.
 
-We explore in this plot the distribution of number of naturalization for yeach year.
+We explore in this plot the distribution of number of naturalization for each year.
 
 <center>
 ```{r , echo=FALSE, warning=FALSE, message = FALSE, out.width='50%', out.height='50%'}
@@ -160,7 +160,7 @@ It seems that the boxes doesn't change a lot over the years, but we notice that 
 
 ## Relatively by Canton
 
-Comparing the cantons between themselves without accounting for their difference in populations may lead to wrong conclusions. Here, we plot the map of Switzerland and devide the total number of naturalization in a canton by the population of the said canton. We then multiply this number by hundred. The obtained number for each canton represents the share of the new Swiss citizens for each canton. This manipulation allows us to see the relative difference the number of naturalization between cantons to the population.
+Comparing cantons between themselves without accounting for their difference in populations may lead to wrong conclusions. Here, we plot the map of Switzerland and devide the total number of naturalization in a canton by the population of the said canton. We then multiply this number by 100. The obtained number represents the share of the new Swiss citizens to the total population for each canton. This manipulation allows us to see the relative difference in the numbers of naturalization between cantons.
 
 ```{r echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('plots/daryna/relat_map.png')
@@ -176,7 +176,7 @@ knitr::include_graphics('plots/daryna/relative_map.gif')
 
 ## Over time by Canton
 
-We can inspect the change through time of the the number of naturalizations by canton by a stacked time series plot where each leayer represents a canton.
+We can inspect the change through time of the the number of naturalization by canton by plotting a stacked time series plot where each leayer represents a canton.
 
 <center>
 ```{r, echo=FALSE, out.width='70%', out.height='70%'}
@@ -195,7 +195,8 @@ ggplotly(p)
 ```
 </center>
 
-As mentioned previously, the highest numbers of naturalization tend to have cantons of Zurich, Vaud and Geneva. We notice as well, that all cantons seem to follow a similar pattern, constant before 2014, increase until 2017 and decrease after. We also notice that cantons of Vaud and Geneva had a stronger increase in 2014 than other cantons. Between 2014 and 2016 the number of naturalization more than tripled in Geneva, in Vaud almost doubled.
+As mentioned previously, the highest numbers of naturalization tend to have cantons of Zurich, Vaud and Geneva. Overall, we notice the same pattern we discussed before: the total number of naturalization is constant before 2014, increases until 2017 and decreases after. 
+However, through time, the share of almost each canton is maintained and the increase in total number of naturalization is generated particularly by 2 cantons: Vaud and Geneva. These 2 cantons had a much stronger increase in 2014 than other cantons. Between 2014 and 2016 the number of naturalization more than tripled in Geneva and in Vaud almost doubled.
 
 <center>
 ```{r, echo=FALSE, out.width='70%', out.height='70%'}
@@ -214,7 +215,7 @@ ggplotly(p)
 ```
 </center>
 
-By inspecting the relative number over time for each canton, we notice again that the cantons follow a similar pattern. But as the population increases, the number of naturalization increases and the difference in years seems to be smaller in relative numbers. However, we still notice that the share of Geneva and Vaud seems to increase a lot after 2014.
+By inspecting the relative number over time for each canton, we notice that the shares of cantons are not as different as we didn't account for the total population by canton. As the population increases, the number of naturalization increases and the difference in years seems to be smaller in relative numbers. However, we still notice that the share of Geneva and Vaud seems to increase a lot after 2014.
 
 
 ## Investigating the type of acquisition
@@ -224,11 +225,11 @@ knitr::include_graphics('plots/thomas/chart_acquisition.png')
 ```
 
 Looking at this chart, we see that there is two main type of acquisition (ordinary one and simplified one) for a total of 99.38%.
-As defined in the introduction, there is three type of acquisition that are really special cases (`Confirmation of the Swiss nationality`, `Naturalisation by adoption` and `Reintegration`).
+As defined in the introduction, there is three type of acquisition that are considered as special cases (`Confirmation of the Swiss nationality`, `Naturalisation by adoption` and `Reintegration`).
 
 ### By age and gender
 
-The plot explores the composition of the total number of naturalization between 2011 and 2020 by gender and the age group. Within each group, we visualize the type of the naturalization that was performed.
+The plot explores the composition of the total number of naturalization between 2011 and 2020 by gender and the age group. Within each group, we visualize the type of the naturalization that was obtained.
 
 ```{r echo=FALSE, out.width='70%', fig.align='center'}
 knitr::include_graphics('plots/daryna/total_age_gender_nat.png')
@@ -237,7 +238,7 @@ knitr::include_graphics('plots/daryna/total_age_gender_nat.png')
 We notice that the age groups which tend to have the highest numbers of naturalization belong to the groups of 10-19, 30-39 and 40-49.
 We may assume, that these age categories correspond to working professionals and their children.
 Also, we notice that for age groups of 30-39 and 40-49 the shares of ordinary and simplified naturalization are very close, for other groups, the ordinary naturalization seems to be much more higher.
-Also, the simplified naturalization tend to be slightly higher for females belonging to the age groups 30-39 and 40-49 than males of the same age groups. Another interesting finding, is that the 3 least popular types of naturalization: specifically, naturalization by adoption, naturalization by confirmation of the Swiss nationality and Reintegration, are nonexistant for most of the age groups. Naturalization by adoption and naturalization by confirmation of the Swiss nationality represent for age groups of 0-9 and 10-19. The share of naturalization by integration seems to be very small for all the age groups.
+Also, the simplified naturalization tend to be slightly higher for females belonging to the age groups 30-39 and 40-49 than for males of the same age groups. Another interesting finding, is that the 3 least popular types of naturalization: specifically, naturalization by adoption, naturalization by confirmation of the Swiss nationality and Reintegration, are nonexistant for most of the age groups. Naturalization by adoption and naturalization by confirmation of the Swiss nationality are only present for age groups of 0-9 and 10-19. The share of naturalization by integration seems to be very small for all the age groups.
 
 The gif represents the change of the composition over the years of the number of naturalization by gender and the age groups.
 
@@ -245,13 +246,13 @@ The gif represents the change of the composition over the years of the number of
 knitr::include_graphics('plots/daryna/nat_age_gender.gif')
 ```
 
-We notice, as stated previously, that there seems to been overall increase before 2017 followed by a decrease. The composition seems to stay similar over the years,but minor changes happen within the groups.
+We notice, as stated previously, that there seems to been overall increase before 2017 followed by a decrease. The composition seems to stay similar over the years, but minor changes happen within the groups.
 
-The rest of the report concentrates more thoroughly on each group depending on the type of naturalization.
+The rest of the report concentrates more thoroughly on different groups depending on the type of naturalization.
 
 # Basic exploration of three less represented types of acquisiton
 
-Let's take a look at the following type of acquisition : `Confirmation of the Swiss nationality`, `Naturalization by adoption` and `Reintegration`. Since each type of acquisition are quite different, we will take a look at them one by one.
+Let's take a look at the following type of acquisition : `Confirmation of the Swiss nationality`, `Naturalization by adoption` and `Reintegration`. Since each type of acquisition is quite different, we will take a look at them one by one.
 
 ## Confirmation of the Swiss nationality
 
@@ -267,11 +268,11 @@ We can see that in the top 10, except for Brazil, there is only European countri
 knitr::include_graphics('plots/thomas/confirmation_age_gender.png')
 ```
 
-Most of confirmation concerns persons aged less than 20, 90.22% of the total count of confirmed Swiss citizenship. This may be due to the fact that child from Swiss citizens are not immediately declared on their birth day.
+Most of confirmation concerns persons aged less than 20, 90.22% of the total count of confirmed Swiss citizenship. This may be due to the fact that children from Swiss citizens are not immediately declared on their birthday.
 
 ## Naturalization by adoption
 
-To acquire Swiss citizenship through adoption if the person adopted was under the age of majority (18 years) at the time of adoption.
+It is possible to acquire Swiss citizenship through adoption if the person adopted was under the age of majority (18 years) at the time of adoption.
 
 As before, note that there has been `776` naturalization by adoption between 2011 and 2020 which lead to a mean of `77.6` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then look at all by age and gender.
 
@@ -280,9 +281,9 @@ knitr::include_graphics('plots/thomas/adoption_previous_citizenship.png')
 ```
 
 We can see that for previous citizenship with higher numbers are not European, except for Russia and Germany. Ones with higher numbers are countries where poverty is far more present that in Switzerland, especially when we see that Ethiopia is almost 1/5 of the total.
-Ethiopia is the first because during several years a lot of Ethiopian child were adopted over the world, this number was multiplied by 10 around 2010.
+Ethiopia is the first because during several years a lot of Ethiopian children were adopted over the world, this number was multiplied by 10 around 2010.
 However, there has been some problems with Ethiopian adoption due to the fact that a lot of child were kidnapped.
-We will come back to this when exploring adoption over time.
+We will come back to this topic when exploring adoption over time.
 
 ```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/adoption_age_gender.png')
@@ -294,7 +295,7 @@ We see that most of naturalization by adoption are acquired before 20 years, whi
 
 This type of acquisition is the less represented, there has been only 162 reinstatement of Swiss citizenship in 10 years. This concerns people that have previously held Swiss citizenship but lost it by forfeiting or relieving citizenship, or by marrying a foreign person. There is different criteria for reintegration based on where the concerned person lives. Some criteria are purely subjective ones.
 
-Note that there has been only `162` naturalization by adoption between 2011 and 2020 which lead to a mean of `16.2` per year. We first plot the total number of such citizens and then look at all by age and gender.
+Note that there has been only `162` naturalization by reintegration between 2011 and 2020 which lead to a mean of `16.2` per year. We first plot the total number of such citizens and then look at all by age and gender.
 
 ```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/reintegration_previous_citizenship.png')
@@ -352,7 +353,7 @@ It will be clearer in the following plot.
 knitr::include_graphics('plots/thomas/ordin_simpl_proportion_previous_citizenship.png')
 ```
 
-There is really few previous citizenship for which there has been more simplified than ordinary naturalization (Brazil, Thailand, Ukraine, etc).
+There is few previous citizenship for which there has been more simplified than ordinary naturalization (Brazil, Thailand, Ukraine, etc).
 An example to this fact could be that the population which acquire Swiss citizenship is the third generation form these countries to be in Switzerland and thus have access to simplified instead of ordinary naturalization.
 
 ## By age and gender
