@@ -30,7 +30,7 @@ q <- ggplot(new_plot,
   theme(#legend.position = c(0.7,0.7),
     plot.title = element_text(hjust = 0.5)) +
   labs(x = "Age", y = "Number of naturalisations", fill = "Type of naturalisations by gender",
-       title = "Naturalisation by gender and age between 2010 and 2020") + 
+       title = "Naturalisation by gender and age between 2011 and 2020") + 
   scale_fill_brewer(palette = c("RdGy")) +
   scale_y_continuous(breaks = seq(-100000, 100000, by = 10000), labels = abs) +
   coord_flip()  
