@@ -9,6 +9,20 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+```{r , echo=FALSE, warning=FALSE, message = FALSE}
+library(plotly)
+library(tidyverse)
+library(ggplot2)
+library(pals)
+library(RColorBrewer)
+pacman::p_load(tidyverse, pacman, ggmap, janitor, sf, mapview, leaflet, rgdal, RColorBrewer,lubridate, boot, broom)
+```
+
+```{r , echo=FALSE, warning=FALSE, message = FALSE}
+load("data_ready.RData")
+```
+
 # Introduction and description of database
 
 The aim of this report is to analyze how the naturalization in Switzerland evolved in the last years and to understand the profile of the people that seek to obtain the Swiss nationality.
@@ -57,30 +71,142 @@ In this document we will explore a database about the acquisition of Swiss natio
 
 # General overview of data
 
-```{r echo=FALSE, out.width='80%'}
+```{r echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('plots/daryna/nat_map.png')
 ```
 
-```{r echo=FALSE, out.width='80%'}
+```{r echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('plots/daryna/nat_map.gif')
 ```
 
-```{r echo=FALSE, out.width='80%'}
+```{r , echo=FALSE, warning=FALSE, message = FALSE, out.width='60%'}
+total_by_year <- data_ready %>%
+  group_by(year) %>%
+  summarise(total = sum(total))
+```
+
+
+```{r, echo=FALSE, warning=FALSE, message = FALSE}
+total_by_year <- total_by_year %>%
+  rename(Year = year,
+         Total = total)
+```
+
+
+```{r, echo=FALSE, warning=FALSE, message = FALSE}
+data_ready <- data_ready %>%
+  rename(Year = year,
+         Total = total,
+         Canton = canton,
+         Relative = relative)
+```
+<center>
+```{r , echo=FALSE, warning=FALSE, message = FALSE, out.width='50%', out.height='50%'}
+p <- ggplot(total_by_year, aes(x = Year, y = Total)) + geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks=seq(2011, 2020, 1)) +
+  ylim(0,50000) +
+  theme_bw() +
+  labs(title = "Total number of naturalisations over time",
+       x = "Year",
+       y = "") +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+ggplotly(p)
+```
+</center>
+
+<center>
+```{r , echo=FALSE, warning=FALSE, message = FALSE, out.width='50%', out.height='50%', fig.align='center'}
+p <- ggplot(data_ready, aes(x = Year, y = Total)) +
+  geom_point() +
+  geom_smooth() +
+  scale_x_continuous(breaks=seq(2011, 2020, 1)) +
+  ylim(0,11000) + 
+  theme_bw() + 
+  labs(title = "Total number of naturalisations over time",
+       x = "Year",
+       y = "") +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+ggplotly(p)
+```
+</center>
+
+<center>
+```{r , echo=FALSE, warning=FALSE, message = FALSE, out.width='50%', out.height='50%', fig.align='center'}
+p <- ggplot(data_ready, aes(x=as.factor(Year), y=Total)) +
+  geom_boxplot() + 
+  labs(title = "Total number of naturalisations over time",
+       x = "Year",
+       y = "") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5, size = 10)) 
+ggplotly(p)
+```
+</center>
+
+
+```{r echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('plots/daryna/relat_map.png')
 ```
 
-```{r echo=FALSE, out.width='80%'}
+```{r echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('plots/daryna/relative_map.gif')
 ```
 
+
+<center>
+```{r, echo=FALSE, out.width='70%', out.height='70%', fig.align='center'}
+p <- ggplot(data_ready, aes(x = Year, y = Total, fill = Canton)) +
+  geom_area(color = "black") +
+  labs(title = "Total number of naturalisations by canton over time",
+       subtitle = "2011 - 2020",
+       x = "Year",
+       y = "",
+       fill = "Canton") +
+  scale_x_continuous(breaks=seq(2011, 2020, 1)) +
+  theme_minimal() +
+  theme(axis.text.x=element_text(angle=45, hjust=1)) +
+  theme(plot.title = element_text(hjust = 0.5))
+ggplotly(p)
+```
+</center>
+
+
+<center>
+```{r, echo=FALSE, out.width='70%', out.height='70%', fig.align='center'}
+p <- ggplot(data_ready, aes(x = Year, y = Relative, fill = Canton)) +
+  geom_area(color = "black") +
+  labs(title = "Relative number of naturalisations by Canton over time",
+       subtitle = "2011 - 2020",
+       x = "Year",
+       y = "",
+       fill = "Canton") +
+  scale_x_continuous(breaks=seq(2011, 2020, 1)) +
+  theme_minimal() +
+  theme(axis.text.x=element_text(angle=45, hjust=1)) +
+  theme(plot.title = element_text(hjust = 0.5))
+ggplotly(p)
+```
+</center>
+
+
 # Investigating the type of acquisition
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='60%', fig.align='center'}
 knitr::include_graphics('plots/thomas/chart_acquisition.png')
 ```
 
 Looking at this chart, we see that there is two main type of acquisition (ordinary one and simplified one) for a total of 99.38%.
 As defined in the introduction, there is three type of acquisition that are really special cases (`Confirmation of the Swiss nationality`, `Naturalisation by adoption` and `Reintegration`).
+
+```{r echo=FALSE, out.width='70%', fig.align='center'}
+knitr::include_graphics('plots/daryna/total_age_gender_nat.png')
+```
+
+```{r echo=FALSE, out.width='60%', fig.align='center'}
+knitr::include_graphics('plots/daryna/nat_age_gender.gif')
+```
 
 We will focus on these three in the next part and then we won't consider it anymore in order to focus on the two main types of acquisition.
 
@@ -92,13 +218,13 @@ Let's take a look at the following type of acquisition : `Confirmation of the Sw
 
 First, note that there has been only `1452` confirmation between 2011 and 2020 which lead to a mean of `145.2` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then look at all by age and gender.
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/confirmation_previous_citizenship.png')
 ```
 
 We can see that in the top 10, except for Brazil, there is only European countries, in particular the three first are bordering ones. This may be due to the fact that most of expatriation of Swiss citizen is in European countries, particularly in western Europe (Germany, France, Italy, Spain).
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/confirmation_age_gender.png')
 ```
 
@@ -110,7 +236,7 @@ To acquire Swiss citizenship through adoption if the person adopted was under th
 
 As before, note that there has been `776` naturalization by adoption between 2011 and 2020 which lead to a mean of `77.6` per year. We first plot the total number of such citizens for the 50 citizenship with the higher values and then look at all by age and gender.
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/adoption_previous_citizenship.png')
 ```
 
@@ -119,7 +245,7 @@ Ethiopia is the first because during several years a lot of Ethiopian child were
 However, there has been some problems with Ethiopian adoption due to the fact that a lot of child were kidnapped.
 We will come back to this when exploring adoption over time.
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/adoption_age_gender.png')
 ```
 
@@ -131,13 +257,13 @@ This type of acquisition is the less represented, there has been only 162 reinst
 
 Note that there has been only `162` naturalization by adoption between 2011 and 2020 which lead to a mean of `16.2` per year. We first plot the total number of such citizens and then look at all by age and gender.
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/reintegration_previous_citizenship.png')
 ```
 
 We can see that the top 4 is composed only by bordering countries which means that concerned individuals may have gone to these countries after losing their Swiss citizenship. We also see that `Stateless` appeared on y axis which means that the individual that obtained the Swiss citizenship had only Swiss nationality when he lost it.
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/reintegration_age_gender.png')
 ```
 
@@ -149,7 +275,7 @@ We will now visualize time series of these three type of acquisitions. Beginning
 This is due to the fact that there has been new regulations concerning adoption of Ethiopian child form the Ethiopian government in 2014 (see **source directive du 4 juillet 2016 (adoption)**).
 Finishing with `Reintegration`, numbers are slowly increasing throughout the years except for a peak in 2019 where the number seems extreme compared to other years. **COMMENT ON THIS : trouve rien...**
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/over_time_rein_adop_conf.png')
 ```
 
@@ -157,13 +283,15 @@ knitr::include_graphics('plots/thomas/over_time_rein_adop_conf.png')
 
 In this section we will explore ordinary and simplified naturalization and compare them since these two type of acquisition are the most common ones. We can also compare these two since the procedure is quite the same.
 
+## By previous citizenship
+
 In the following plot we visualize the count of ordinary and simplified naturalization by previous citizenship for the 50 most represented one.
 European countries are most presented.
 Note that the top 6 of these countries represent more than half over all naturalization between 2011 and 2020.
 We see that there is 3 of these 6 that are bordering ones (Germany, France and Italy).
 Numbers are proportional to the number of foreigners from each countries.
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/ordin_simpl_previous_citizenship_percentage.png')
 ```
 
@@ -172,25 +300,50 @@ It seems that there is more ordinary naturalization for almost all previous citi
 This is due to the fact that simplified naturalization is more restrictive.
 It will be clearer in the next plot.
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/ordin_simpl_previous_citizenship.png')
 ```
 
 There is really few previous citizenship for which there has been more simplified than ordinary naturalization (Brazil, Thailand, Ukraine, etc).
 An example to this fact could be that the population which acquire Swiss citizenship is the third generation form these countries to be in Switzerland and thus have access to simplified instead of ordinary naturalization.
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/ordin_simpl_proportion_previous_citizenship.png')
 ```
 
-Now taking a look over age class, we see that for simplified naturalization middle age (30-49) is the most represented, by 70.51% against 32.6% for ordinary naturalization.
+## By age and gender
+
+Now taking a look over age class, we have that 56.69% of simplified naturalization concerns women against 51.24% for ordinary naturalization.
+These numbers are homogeneous taking into account
+
+We see that for simplified naturalization middle age (30-49) is the most represented, by 70.51% against 32.6% for ordinary naturalization.
 This could be due to the fact that simplified is accessible to husband or wife of Swiss citizen and thus is more frequent for middle class age.
 On the contrary, for ordinary naturalization, it is more homogeneous over all class, which reflects the fact that it is the more general acquisition and thus, doesn't concern a really particular portion of the population that wishes to acquire Swiss citizenship. 
 
-```{r echo=FALSE, out.width='60%'}
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/ordin_simpl_age_gender.png')
 ```
 
-```{r echo=FALSE, out.width='60%'}
+**Je les mets toutes pour le moment**
+
+```{r echo=FALSE, out.width='60%', fig.align='center'}
+knitr::include_graphics('plots/daryna/plot_map_ord.png')
+```
+
+```{r echo=FALSE, out.width='60%', fig.align='center'}
+knitr::include_graphics('plots/daryna/relat_ord.png')
+```
+
+```{r echo=FALSE, out.width='60%', fig.align='center'}
+knitr::include_graphics('plots/daryna/simpfied_map.png')
+```
+
+```{r echo=FALSE, out.width='60%', fig.align='center'}
+knitr::include_graphics('plots/daryna/relat_simplified.png')
+```
+
+
+
+```{r echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics('plots/thomas/over_time_ordin_simpl.png')
 ```
